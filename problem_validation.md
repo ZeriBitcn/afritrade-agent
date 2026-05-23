@@ -1,7 +1,7 @@
 # Week 1: Problem Validation – AfriTrade Agent
 
 **Crew:** Team‑Africod  
-**Members:** Zerihun (Ethiopia), Chiamaka (Nigeria), Alain (Burundi)  
+**Members:** Zerihun Asrat (Ethiopia), Aja Corneli (Nigeria), and Patience Nzomuhoza (Burundi)   
 **Date:** 23 May 2026  
 
 ---
