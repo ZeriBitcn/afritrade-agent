@@ -1,7 +1,7 @@
 # Week 1: Trader Interviews – AfriTrade Agent
 
 **Crew:** Team‑Africod  
-**Interviewers:** 1. Zerihun (Ethiopia),  2. Aja Corneli (Nigeria) 3. Patience Nzomuhoza (Burundi) 
+**Interviewers:** 1. Zerihun Asrat (Ethiopia),  2. Aja Corneli (Nigeria) 3. Patience Nzomuhoza (Burundi) 
 **Dates:** 20–23 May 2026  
 **Method:** WhatsApp and Telegram voice calls, recorded with consent (anonymised)
 
