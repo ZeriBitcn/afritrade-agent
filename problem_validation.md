@@ -47,7 +47,7 @@ All three use feature phones (voice and text are primary interfaces).
 | T‑ET01 | Addis–Nairobi | Coffee | “What tax at Moyale?” | Ask friends who crossed last week |
 | T‑ET02 | Addis–Djibouti | Khat | “Is the port open?” | Radio / word of mouth |
 | T‑ET03 | Mekelle–Adigrat | Barley | “Exchange rate today?” | Black market – often outdated |
-| T‑NG01 | Lagos–Accra | Phones | “Tariff for 50 smartphones?” | Pays a broker 10% of goods value |
+| T‑NG01 | Abuja–Accra | Phones | “Tariff for 50 smartphones?” | Pays a broker 10% of goods value |
 | T‑NG02 | Kano–Maradi (Niger) | Leather | “Road closure near border?” | Waits and asks other drivers |
 | T‑NG03 | Lagos–Cotonou | Rice | “Is the 5% levy still active?” | Guesses – sometimes overpays 20% |
 | T‑BI01 | Bujumbura–Goma | Beans | “Which route is safe today?” | Relies on motorcycle taxis who charge double |
