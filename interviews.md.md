@@ -1,7 +1,7 @@
 # Week 1: Trader Interviews – AfriTrade Agent
 
 **Crew:** Team‑Africod  
-**Interviewers:** Zerihun (Ethiopia), Chiamaka (Nigeria), Alain (Burundi)  
+**Interviewers:** 1. Zerihun (Ethiopia),  2. Aja Corneli (Nigeria) 3. Patience Nzomuhoza (Burundi) 
 **Dates:** 20–23 May 2026  
 **Method:** WhatsApp and Telegram voice calls, recorded with consent (anonymised)
 
@@ -29,8 +29,7 @@
 
 ---
 
-## Nigeria – Chiamaka (proposed 3 interviews)
-
+## Nigeria – Aja Cornel (proposed 3 interviews)
 ### T‑NG01 – Fatima (phone parts, Lagos to Accra)
 - **Product:** 50–100 smartphone screens, batteries
 - **Border crossing:** Seme (Nigeria–Benin–Ghana corridor)
@@ -52,7 +51,7 @@
 
 ---
 
-## Burundi – Alain (2 interviews)
+## Burundi – Patience Nzomuhoza (2 interviews) 
 
 ### T‑BI01 – Jean (beans trader, Bujumbura to Goma, DRC)
 - **Product:** Dried beans (sacks)
