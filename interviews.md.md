@@ -7,7 +7,7 @@
 
 ---
 
-## Ethiopia – Zerihun (2 interviews, 1 incomplet)
+## Ethiopia – Zerihun Asrat (2 interviews, 1 incomplet)
 
 ### T‑ET01 – Habtamu Tsegaye (Electronics trader, Addis Ababa to Nairobi route)
 - **Product:** Green coffee beans (5–10 sacks per trip)
