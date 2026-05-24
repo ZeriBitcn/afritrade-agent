@@ -1,0 +1,6 @@
+{
+  "name": "AfriTrade Agent",
+  "description": "Live West African trade and tariff lookup assistant, powered by real-time vector search and Gemini reasoning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
