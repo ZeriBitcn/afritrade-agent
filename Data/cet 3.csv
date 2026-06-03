@@ -1,0 +1,5 @@
+﻿"record_id,corridor_id,border_post,country_alpha2,trader_type,direction,product_hs2,avg_wait_hours,informal_fee_usd,checkpoint_count"
+"REC001,ABIDJAN-LAGOS,Seme-Krake,NG,SSCBT_FEMALE,INBOUND,62,14.5,45.00,34"
+"REC002,ABIDJAN-LAGOS,Seme-Krake,BJ,SSCBT_MALE,OUTBOUND,10,04.2,12.50,12"
+"REC003,NORTHERN,Malaba,KE,COMMERCIAL_HGV,INBOUND,87,03.5,00.00,2"
+"REC004,NORTHERN,Busia,UG,SSCBT_FEMALE,OUTBOUND,07,01.8,05.00,4"

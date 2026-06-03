@@ -22,8 +22,19 @@ from transformers import AutoTokenizer, AutoModel
 
 class MiniLMEmbeddingModel:
     def __init__(self, model_name='sentence-transformers/all-MiniLM-L6-v2'):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModel.from_pretrained(model_name)
+        try:
+            # Try online load first
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=False)
+            self.model = AutoModel.from_pretrained(model_name, local_files_only=False)
+        except Exception as e:
+            print(f"Warning: Could not connect to Hugging Face ({e}). Trying to load from local cache...")
+            try:
+                self.tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=True)
+                self.model = AutoModel.from_pretrained(model_name, local_files_only=True)
+                print("Successfully loaded model from local cache.")
+            except Exception as cache_err:
+                print(f"Error: Local cache load failed: {cache_err}")
+                raise e
         
     def encode(self, sentences):
         is_single = isinstance(sentences, str)
