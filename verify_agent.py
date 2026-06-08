@@ -30,7 +30,7 @@ try:
     result = g.find_shortest_path("Lagos", "Accra")
     assert result is not None, "Path result is None"
     assert len(result["path"]) >= 2, "Path must have at least 2 nodes"
-    print(f"{PASS} Path Lagos → Accra: {' → '.join(result['path'])}")
+    print(f"{PASS} Path Lagos -> Accra: {' -> '.join(result['path'])}")
     print(f"{INFO} Distance: {result['total_distance_km']} km | "
           f"Time: {result['total_time_hours']} hrs | "
           f"Checkpoints: {result['total_checkpoints']} | "
@@ -38,8 +38,8 @@ try:
 
     # Test Dakar → Bamako
     result2 = g.find_shortest_path("Dakar", "Bamako")
-    assert result2 is not None, "Dakar → Bamako path not found"
-    print(f"{PASS} Path Dakar → Bamako: {' → '.join(result2['path'])}")
+    assert result2 is not None, "Dakar -> Bamako path not found"
+    print(f"{PASS} Path Dakar -> Bamako: {' -> '.join(result2['path'])}")
 
     g.close()
 except Exception as e:
@@ -54,7 +54,7 @@ try:
     route = route_finder_tool("Lagos", "Accra", neo4j_config=None)
     assert "error" not in route or route.get("path"), "Route returned error with no path"
     if route.get("path"):
-        print(f"{PASS} route_finder_tool: {' → '.join(route['path'])} "
+        print(f"{PASS} route_finder_tool: {' -> '.join(route['path'])} "
               f"({route['total_distance_km']} km)")
     else:
         print(f"{FAIL} route_finder_tool returned: {route}")
@@ -132,9 +132,16 @@ try:
     assert result.get("final_answer"), "No final_answer in result"
     print(f"{PASS} Full pipeline completed successfully.")
     print(f"{INFO} Steps executed: {len(result.get('steps', []))}")
-    print(f"{INFO} Answer preview: {result['final_answer'][:120].strip()}...")
-    print(f"{INFO} Metadata: commodity={result['metadata'].get('commodity')}, "
-          f"route={result['metadata'].get('route_results', {}).get('path', [])[:3]}")
+    
+    def safe_print(text):
+        try:
+            print(text)
+        except UnicodeEncodeError:
+            print(text.encode('ascii', errors='replace').decode('ascii'))
+            
+    safe_print(f"{INFO} Answer preview: {result['final_answer'][:120].strip()}...")
+    safe_print(f"{INFO} Metadata: commodity={result['metadata'].get('commodity')}, "
+               f"route={result['metadata'].get('route_results', {}).get('path', [])[:3]}")
 
 except Exception as e:
     print(f"{FAIL} Full pipeline error: {e}")
