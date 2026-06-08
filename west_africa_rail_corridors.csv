@@ -1,0 +1,8 @@
+corridor_id,corridor_name,countries,start_city,end_city,distance_km,gauge_type,operational_status,estimated_annual_trade_volume_usd_m,key_commodities
+WA-RL-001,Abidjan-Ouagadougou Railway (SITARAIL),Cote d'Ivoire;Burkina Faso,Abidjan,Ouagadougou,1260,Meter Gauge,Operational,500,Fuel;Cement;Fertilizer;Cotton;Shea nuts
+WA-RL-002,Dakar-Bamako Railway (TRANSRAIL),Senegal;Mali,Dakar,Bamako,1287,Meter Gauge,Partially Operational,200,Fuel;Cement;Agricultural products;Gold ore
+WA-RL-003,Lagos-Kano Railway (NRC Western Line),Nigeria,Lagos,Kano,1125,Standard Gauge (Upgrading),Under Rehabilitation,800,Petroleum;Cement;Agricultural goods;Containers
+WA-RL-004,Tema-Akosombo Railway,Ghana,Tema,Akosombo,85,Narrow Gauge,Operational,50,Containers;Bauxite;Manganese
+WA-RL-005,Abuja-Kaduna Railway,Nigeria,Abuja,Kaduna,186,Standard Gauge,Operational,300,Passenger;Containers;Agricultural products
+WA-RL-006,Lagos-Ibadan Railway,Nigeria,Lagos,Ibadan,156,Standard Gauge,Operational,400,Passenger;Containers;Cement;Fuel
+WA-RL-007,Conakry-Kankan Railway,Guinea,Conakry,Kankan,662,Meter Gauge,Rehabilitation Planned,30,Bauxite;Iron ore;Agricultural products

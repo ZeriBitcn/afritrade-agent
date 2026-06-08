@@ -1,0 +1,49 @@
+country,category,percentage_of_tariff_lines,reduction_period,start_year,estimated_tariff_lines,notes
+Nigeria,A (Non-sensitive),90%,5 years (non-LDC),2024,5076,Linear annual reduction of MFN applied rates
+Nigeria,B (Sensitive),7%,10 years (non-LDC),2024,395,Gradual reduction with safeguard measures
+Nigeria,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Ghana,A (Non-sensitive),90%,5 years (non-LDC),2024,5076,Linear annual reduction of MFN applied rates
+Ghana,B (Sensitive),7%,10 years (non-LDC),2024,395,Gradual reduction with safeguard measures
+Ghana,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Senegal,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Senegal,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Senegal,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Cote d'Ivoire,A (Non-sensitive),90%,5 years (non-LDC),2024,5076,Linear annual reduction of MFN applied rates
+Cote d'Ivoire,B (Sensitive),7%,10 years (non-LDC),2024,395,Gradual reduction with safeguard measures
+Cote d'Ivoire,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Benin,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Benin,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Benin,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Burkina Faso,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Burkina Faso,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Burkina Faso,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Niger,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Niger,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Niger,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Mali,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Mali,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Mali,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Guinea,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Guinea,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Guinea,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Sierra Leone,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Sierra Leone,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Sierra Leone,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Liberia,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Liberia,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Liberia,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Togo,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Togo,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Togo,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Gambia,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Gambia,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Gambia,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Guinea-Bissau,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Guinea-Bissau,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Guinea-Bissau,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Cape Verde,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Cape Verde,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Cape Verde,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization
+Mauritania,A (Non-sensitive),90%,10 years (LDC),2024,5076,Linear annual reduction of MFN applied rates
+Mauritania,B (Sensitive),7%,13 years (LDC),2024,395,Extended timeline for LDCs
+Mauritania,C (Exclusion),3%,No reduction,N/A,169,Permanently excluded from liberalization

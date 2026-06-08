@@ -1,0 +1,26 @@
+category,metric,value,description
+Roads,Total road network,"1,004,512 km","All motorways, trunk roads, primary, secondary, and connecting local roads across Africa"
+Roads,Motorway/Trunk roads,"142,350 km",Major inter-city and cross-border routes
+Roads,Primary roads,"258,720 km",Main national highways and corridors
+Roads,Secondary roads,"312,450 km",Provincial/regional connecting roads
+Roads,Tertiary/Local roads,"290,992 km",Local roads connecting to other transport modes
+Rail,Total rail network,"99,373 km",All active and inactive rail lines
+Rail,Active rail lines,"72,450 km",Currently operational railway lines
+Rail,Railway stations,"4,412",Total stations across the continent
+Rail,Gauge types,Multiple,"Standard (1435mm), Meter (1000mm), Cape (1067mm), Narrow"
+Aviation,Total airports,234,All airports with IATA/ICAO codes
+Aviation,International airports,85,Airports with regular international services
+Aviation,Airline routes,"5,200+",Scheduled airline routes connecting airports
+Maritime,Maritime ports,179,All seaports and coastal terminals
+Maritime,Major container ports,45,Ports handling containerized cargo
+Maritime,Port connections,"3,500+",Maritime shipping routes and connections
+Inland Waterway,Inland ports/docking sites,132,River and lake port facilities
+Inland Waterway,Navigable waterways,"48,000 km",Seasonal and year-round navigable routes
+Intermodal,Intermodal connections,"12,500+",Connection points between different transport modes
+Data Quality,Data sources,OpenStreetMap;World Bank;AfDB;National agencies,Multiple authoritative sources fused and validated
+Data Quality,Spatial resolution,Sub-national,Geospatial data with coordinate-level precision
+Coverage,Countries covered,54 (all African countries),Complete continental coverage
+Coverage,Data vintage,2023-2025,Most recent available data for each country
+Format,Data format,GeoPackage (GPKG);CSV;Shapefile,Open standard formats for GIS and database use
+Access,DOI,10.5281/zenodo.17593244,Zenodo archival with persistent identifier
+Access,GitHub,github.com/nismod/Africa-transport-database,Source code and processing scripts

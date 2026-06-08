@@ -1,0 +1,17 @@
+country,logistics_performance_index,avg_customs_clearance_hours,avg_border_crossing_hours,avg_port_delay_days,trade_facilitation_score_100,time_to_export_hours,trade_agreements
+Nigeria,2.54,45.2,6.8,3.2,72,48,ECOWAS CET;AfCFTA;ECOWAS Trade Liberalization Scheme (ETLS)
+Ghana,2.78,38.5,5.2,2.8,68,42,ECOWAS CET;AfCFTA;ETLS;Ghana Single Window
+Cote d'Ivoire,2.71,42.0,5.8,3.0,70,45,ECOWAS CET;AfCFTA;ETLS;WAEMU Trade Liberalization
+Senegal,2.65,40.3,5.5,2.9,65,40,ECOWAS CET;AfCFTA;ETLS;WAEMU Trade Liberalization
+Benin,2.48,48.5,7.2,3.5,62,46,ECOWAS CET;AfCFTA;ETLS;Benin Single Window
+Togo,2.52,44.0,6.0,3.0,60,43,ECOWAS CET;AfCFTA;ETLS;Lome Port reform
+Burkina Faso,2.35,55.0,8.5,4.2,55,52,ECOWAS CET;AfCFTA;ETLS;WAEMU Trade Liberalization
+Mali,2.28,58.0,9.0,4.5,50,55,ECOWAS CET;AfCFTA;ETLS;WAEMU Trade Liberalization
+Niger,2.18,62.0,10.5,5.0,45,58,ECOWAS CET;AfCFTA;ETLS;WAEMU Trade Liberalization
+Guinea,2.22,60.0,9.5,4.8,48,54,ECOWAS CET;AfCFTA;ETLS
+Sierra Leone,2.1,68.0,11.0,5.5,40,60,ECOWAS CET;AfCFTA;ETLS
+Liberia,2.05,70.0,11.5,5.8,38,62,ECOWAS CET;AfCFTA;ETLS
+Gambia,2.3,56.0,8.0,4.0,52,50,ECOWAS CET;AfCFTA;ETLS
+Guinea-Bissau,2.0,75.0,12.0,6.0,35,65,ECOWAS CET;AfCFTA;ETLS;WAEMU Trade Liberalization
+Cape Verde,2.55,43.0,5.5,2.5,58,42,ECOWAS CET;AfCFTA;ETLS
+Mauritania,2.25,58.0,8.5,4.0,48,50,AfCFTA;Arab Maghreb Union

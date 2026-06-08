@@ -1,0 +1,21 @@
+port_id,port_name,country,city,latitude_longitude,port_type,annual_throughput_teu,number_of_berths,notes,operational_status
+NG-PT-001,Lagos Port Complex (Apapa),Nigeria,Lagos,6.4494;3.3694,Container;Bulk;General Cargo,2100000,85,Largest in West Africa;Congestion challenges,Operational
+NG-PT-002,Tin Can Island Port,Nigeria,Lagos,6.4417;3.3542,Container;Bulk;Roro,1200000,45,Second largest in Nigeria;Roro facilities,Operational
+NG-PT-003,Port Harcourt,Nigeria,Rivers,4.7597;7.0047,Bulk;Oil Terminal;General Cargo,350000,25,Oil export terminal;Niger Delta gateway,Operational
+NG-PT-004,Calabar Port,Nigeria,Cross River,4.9647;8.3233,General Cargo;Bulk,80000,8,Eastern port;Underutilized,Operational
+NG-PT-005,Onne Port,Nigeria,Rivers,4.6953;7.1536,Oil Terminal;Container,250000,20,Oil and gas logistics hub;Free zone,Operational
+GH-PT-001,Tema Port,Ghana,Greater Accra,5.6333;-0.0000,Container;Bulk;General Cargo;Roro,1800000,65,Ghana's main port;MPS terminal expansion,Operational
+GH-PT-002,Takoradi Port,Ghana,Western,4.8947;-1.7614,Bulk;General Cargo;Oil Terminal,400000,22,Oil and gas support;Manganese exports,Operational
+CI-PT-001,Port Autonome d'Abidjan,Cote d'Ivoire,Abidjan,5.3167;-4.0167,Container;Bulk;General Cargo;Roro,1500000,55,Second busiest in West Africa;Rolland Terminal,Operational
+CI-PT-002,Port de San Pedro,Cote d'Ivoire,San Pedro,4.7486;-6.6364,Bulk;General Cargo,350000,18,Cocoa export terminal;Expansion planned,Operational
+SN-PT-001,Port Autonome de Dakar,Senegal,Dakar,14.6833;-17.4333,Container;Bulk;General Cargo;Fishing,600000,30,Strategic Atlantic position;New terminal,Operational
+TG-PT-001,Port Autonome de Lome,Togo,Lome,6.1319;1.2250,Container;Bulk;General Cargo,2060000,60,Leading transshipment hub;MSC/Lomé Terminal,Operational
+BJ-PT-001,Port de Cotonou,Benin,Cotonou,6.3500;2.4333,Container;Bulk;General Cargo,450000,20,Niger corridor gateway;Modernization ongoing,Operational
+GN-PT-001,Port de Conakry,Guinea,Conakry,9.5167;-13.7167,Bulk;General Cargo;Container,250000,15,Bauxite export terminal;Expansion needed,Operational
+SL-PT-001,Queen Elizabeth II Quay,Sierra Leone,Freetown,8.5000;-13.2333,General Cargo;Bulk;Fishing,80000,6,Rehabilitation ongoing;Limited capacity,Operational
+LR-PT-001,Freeport of Monrovia,Liberia,Monrovia,6.3167;-10.8000,General Cargo;Bulk;Container,120000,8,Post-war rehabilitation;Limited draft,Operational
+GM-PT-001,Port of Banjul,Gambia,Banjul,13.4500;-16.5667,General Cargo;Bulk;Fishing,60000,5,Small but strategic;Re-export trade,Operational
+GW-PT-001,Port of Bissau,Guinea-Bissau,Bissau,11.8500;-15.5833,General Cargo;Fishing,30000,3,Very limited capacity;Cashew exports,Operational
+CV-PT-001,Porto da Praia,Cape Verde,Santiago,14.9167;-23.5167,General Cargo;Container;Fishing,50000,4,Transshipment potential;Tourism support,Operational
+MR-PT-001,Port Autonome de Nouakchott,Mauritania,Nouakchott,18.1000;-15.9667,Bulk;General Cargo;Fishing,100000,8,Iron ore;Fish exports;Chinese-built port,Operational
+NE-PT-001,Port of Niamey (River),Niger,Niamey,13.5167;2.1167,River port;General Cargo,15000,1,Seasonal only;Niger River dependent,Seasonal

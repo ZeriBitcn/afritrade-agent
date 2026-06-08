@@ -1,0 +1,17 @@
+country_code,country_name,region,population,gdp_usd_millions,capital,currency_code,official_language
+NGA,Nigeria,West Africa,223800000,477390,Abuja,NGN,English
+GHA,Ghana,West Africa,34000000,72670,Accra,GHS,English
+CIV,Cote d'Ivoire,West Africa,29400000,70230,Yamoussoukro,XOF,French
+SEN,Senegal,West Africa,18200000,27670,Dakar,XOF,French
+BEN,Benin,West Africa,13500000,17470,Porto-Novo,XOF,French
+TGO,Togo,West Africa,9400000,7980,Lome,XOF,French
+BFA,Burkina Faso,West Africa,23000000,21370,Ouagadougou,XOF,French
+MLI,Mali,West Africa,23300000,19140,Bamako,XOF,French
+NER,Niger,West Africa,27200000,14680,Niamey,XOF,French
+GIN,Guinea,West Africa,14200000,16800,Conakry,GNF,French
+SLE,Sierra Leone,West Africa,8600000,4090,Freetown,SLL,English
+LBR,Liberia,West Africa,5500000,4010,Monrovia,LRD,English
+GMB,Gambia,West Africa,2700000,2050,Banjul,GMD,English
+GNB,Guinea-Bissau,West Africa,2100000,1640,Bissau,XOF,Portuguese
+CPV,Cape Verde,West Africa,600000,2430,Praia,CVE,Portuguese
+MRT,Mauritania,West Africa,4900000,9970,Nouakchott,MRO,Arabic

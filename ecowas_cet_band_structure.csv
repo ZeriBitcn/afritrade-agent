@@ -1,0 +1,6 @@
+band_number,tariff_rate,description,example_products,number_of_tariff_lines,share_of_total
+0,0%,Essential social goods,Medicines;Vaccines;Medical supplies;Books;Educational materials;Religious articles,2470,24.3%
+1,5%,"Goods of primary necessity, raw goods and capital goods",Raw cereals;Milk powder;Fertilizer;Machinery;Capital equipment;Raw materials for industry,3120,30.7%
+2,10%,Intermediate goods and other inputs,Semi-processed goods;Textile raw materials;Chemical intermediates;Packaging materials;Agricultural inputs,2540,25.0%
+3,20%,Consumer goods,Processed food;Beverages;Textiles;Footwear;Household appliances;Ceramics;Cosmetics,1650,16.2%
+4,35%,Specific goods for economic development,Vehicles;Tobacco;Alcohol;Luxury items;Finished manufactured goods;Electronics;Second-hand clothing,380,3.7%

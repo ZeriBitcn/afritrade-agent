@@ -1,0 +1,6 @@
+route_id,route_name,countries,start_point,end_point,navigable_distance_km,navigation_type,operational_status,estimated_annual_cargo_kt,key_commodities
+WA-IW-001,Niger River (Niamey-Bamako),Niger;Mali,Niamey,Bamako,800,Seasonal Navigation,Partially Operational,50,Agricultural products;Fuel;Consumer goods
+WA-IW-002,Gambia River (Banjul-Kuntaur),Gambia,Banjul,Kuntaur,300,Seasonal Navigation,Operational,20,Groundnuts;Fish;Fuel;Rice
+WA-IW-003,Volta River (Akosombo-Yapei),Ghana,Akosombo,Yapei,400,Seasonal Navigation,Partially Operational,15,Agricultural products;Building materials
+WA-IW-004,Congo-Oubangui (Bangui-Brazzaville),CAR;Congo,Bangui,Brazzaville,1200,Seasonal Navigation,Operational,80,Timber;Cotton;Consumer goods;Fuel
+WA-IW-005,Senegal River (Saint-Louis-Matam),Senegal;Mauritania,Saint-Louis,Matam,600,Seasonal Navigation,Partially Operational,10,Agricultural products;Fish;Salt

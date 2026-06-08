@@ -1,0 +1,16 @@
+trade_pair,country_a,country_b,year,total_trade_usd_millions,a_to_b_exports_usd_millions,b_to_a_exports_usd_millions,share_of_intraregional_trade_pct,key_commodities
+Nigeria-Ghana,Nigeria,Ghana,2023,1270,850,420,14.2,Petroleum;Cocoa;Machinery
+Nigeria-Cote d'Ivoire,Nigeria,Cote d'Ivoire,2023,1000,620,380,10.5,Petroleum;Cocoa;Iron and steel
+Nigeria-Benin,Nigeria,Benin,2023,2250,1800,450,25.8,Petroleum;Machinery;Fruits;Coffee
+Nigeria-Niger,Nigeria,Niger,2023,700,520,180,7.8,Petroleum;Ores;Oil seeds
+Nigeria-Togo,Nigeria,Togo,2023,430,280,150,4.5,Petroleum;Paper;Oil seeds;Cotton
+Cote d'Ivoire-Burkina Faso,Cote d'Ivoire,Burkina Faso,2023,590,480,110,6.2,Petroleum;Machinery;Cotton;Oil seeds
+Cote d'Ivoire-Mali,Cote d'Ivoire,Mali,2023,660,540,120,6.9,Petroleum;Machinery;Coffee;Oil seeds
+Ghana-Burkina Faso,Ghana,Burkina Faso,2023,375,290,85,3.9,Petroleum;Machinery;Cotton;Oil seeds
+Ghana-Cote d'Ivoire,Ghana,Cote d'Ivoire,2023,670,380,290,7.0,Cocoa;Precious stones;Fats and oils
+Ghana-Togo,Ghana,Togo,2023,500,320,180,5.2,Petroleum;Cocoa;Machinery
+Senegal-Mali,Senegal,Mali,2023,495,420,75,5.2,Petroleum;Machinery;Ores;Oil seeds
+Senegal-Guinea,Senegal,Guinea,2023,235,180,55,2.4,Petroleum;Paper;Ores;Oil seeds
+Togo-Burkina Faso,Togo,Burkina Faso,2023,265,210,55,2.8,Petroleum;Machinery;Cotton;Oil seeds
+Nigeria-Burkina Faso,Nigeria,Burkina Faso,2023,205,160,45,2.1,Petroleum;Machinery;Cotton
+Nigeria-Mali,Nigeria,Mali,2023,235,200,35,2.4,Petroleum;Machinery;Oil seeds

@@ -1,0 +1,11 @@
+route_id,route_name,countries_served,origin_port,destination_ports,distance_nautical_miles,service_type,operational_status,estimated_annual_cargo_teu,key_commodities
+WA-MR-001,Lagos-West Europe Service,Nigeria;Netherlands;UK;Belgium;Germany,Lagos (Apapa/Tin Can),Rotterdam/Antwerp/Hamburg,8500,Deep Sea Container,Operational,12000,Crude oil;Containers;Cocoa;Sesame
+WA-MR-002,Abidjan-Mediterranean Service,Cote d'Ivoire;Spain;Italy;France;Turkey,Abidjan (Port Autonome),Barcelona/Marseille/Istanbul,6200,Deep Sea Container,Operational,8000,Cocoa;Coffee;Timber;Containers;Manganese
+WA-MR-003,Dakar-Europe Service,Senegal;France;Spain;Italy,Dakar (Port Autonome),Marseille/Barcelona/Naples,5500,Deep Sea Container,Operational,6000,Fish;Groundnuts;Phosphates;Containers
+WA-MR-004,Tema-Asia Service,Ghana;China;Singapore;Malaysia;India,Tema (Ghana Ports),Shanghai/Singapore/Mumbai,13000,Deep Sea Container,Operational,9000,Cocoa;Gold;Manganese;Containers;Oil
+WA-MR-005,Lome-West Africa Feeder,Togo;Nigeria;Ghana;Cote d'Ivoire;Cameroon,Lome (Port Autonome),Lagos/Tema/Abidjan/Douala,2500,Regional Feeder,Operational,3500,Transshipment containers;Petroleum;Consumer goods
+WA-MR-006,Dakar-Brazil-South America,Senegal;Brazil;Argentina,Dakar (Port Autonome),Santos/Buenos Aires,5800,Deep Sea Bulk,Operational,2000,Fish;Groundnuts;Phosphates;Soybeans;Sugar
+WA-MR-007,West Africa-China Direct,Nigeria;Ghana;China,Lagos/Tema,Shanghai/Shenzhen/Ningbo,14000,Deep Sea Container,Operational,7000,Containers;Manufactured goods;Electronics;Textiles
+WA-MR-008,Abidjan-South Africa,Cote d'Ivoire;South Africa;Namibia;DRC,Abidjan,Durban/Cape Town,7200,Deep Sea Multi-purpose,Operational,3000,Cocoa;Timber;Containers;Minerals
+WA-MR-009,Conakry-Europe Bulk,Guinea;Netherlands;Ukraine;Russia,Conakry (Port de Conakry),Rotterdam/Odessa,7500,Deep Sea Bulk,Operational,1500,Bauxite;Alumina;Iron ore
+WA-MR-010,Intra-West Africa Cabotage,Multi-country West Africa,Various Ports,Various West African Ports,3000,Coastal Cabotage,Operational,2000,Petroleum products;Food;Consumer goods;Building materials

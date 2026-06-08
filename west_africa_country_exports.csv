@@ -1,0 +1,17 @@
+country,year,total_exports_usd_millions,top_exports,top_hs2_codes,top_destination_countries,notes
+Nigeria,2023,53600,Crude petroleum;Natural gas;Cocoa;Sesame;Rubber,27;71;18;12;40,China;India;Spain;Netherlands;USA,Crude oil (85% of exports);Growing non-oil sector
+Ghana,2023,17300,Gold;Cocoa;Petroleum;Manganese;Bauxite,71;18;27;26;26,China;Switzerland;India;UAE;Netherlands,Gold and cocoa dominant;Oil production from Jubilee field
+Cote d'Ivoire,2023,17800,Cocoa;Cashew nuts;Rubber;Petroleum;Gold,18;08;40;27;71,Netherlands;USA;France;Germany;Belgium,World's largest cocoa producer;Diversifying into refining
+Senegal,2023,6500,Petroleum;Phosphates;Fish;Gold;Groundnuts,27;25;03;71;12,Mali;Switzerland;India;France;China,Emerging oil producer;Large fishing industry
+Benin,2023,2800,Cotton;Cashew nuts;Palm oil;Shea butter;Petroleum products,52;08;15;12;27,India;Bangladesh;UAE;China;Netherlands,Cotton-driven economy;Re-export hub for landlocked neighbors
+Togo,2023,2100,Phosphates;Cocoa;Coffee;Cotton;Re-exports,25;18;09;52;99,Burkina Faso;Mali;Niger;India;China,Transshipment hub (Port of Lome);Phosphate mining
+Burkina Faso,2023,3200,Gold;Cotton;Shea nuts;Livestock;Sesame,71;52;12;01;12,Switzerland;India;China;Singapore;UAE,Gold is 70%+ of exports;Cotton sector recovering
+Mali,2023,3800,Gold;Cotton;Livestock;Cereals;Sesame,71;52;01;10;12,Switzerland;UAE;China;Senegal;Burkina Faso,Major gold producer;Agricultural exports growing
+Niger,2023,2200,Uranium;Gold;Petroleum;Livestock;Onions,26;71;27;01;07,France;China;Nigeria;India;UAE,Uranium dominates;Oil production from Agadem field
+Guinea,2023,4500,Bauxite;Gold;Diamonds;Alumina;Fish,26;71;71;28;03,China;India;UAE;Switzerland;Russia,World's largest bauxite reserves;Simandou iron ore project
+Sierra Leone,2023,1200,Diamonds;Iron ore;Rutile;Cocoa;Fish,71;26;25;18;03,China;Belgium;USA;Netherlands;UAE,Mining sector dominant;Agricultural recovery underway
+Liberia,2023,650,Rubber;Iron ore;Gold;Timber;Cocoa,40;26;71;44;18,USA;China;Germany;India;UAE,Rubber and iron ore mainstays;Post-conflict recovery
+Gambia,2023,320,Groundnuts;Fish;Fruits;Vegetables;Re-exports,12;03;08;07;99,India;China;Senegal;Guinea;UK,Groundnut-dependent;Tourism and re-export sectors
+Guinea-Bissau,2023,210,Cashew nuts;Fish;Timber;Palm kernels,08;03;44;12,India;Vietnam;China;Nigeria;Senegal,Cashew nuts 80%+ of exports;Very narrow export base
+Cape Verde,2023,180,Fish;Clothing;Footwear;Bananas;Re-exports,03;62;64;08;99,Spain;Portugal;Italy;USA;Senegal,Service economy;Tourism-driven;Limited exports
+Mauritania,2023,3200,Iron ore;Gold;Copper;Fish;Petroleum,26;71;74;03;27,China;Switzerland;UAE;Spain;Japan,Iron ore dominant;Growing gold and fishing sectors

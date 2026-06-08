@@ -1,0 +1,21 @@
+ntb_id,country,corridor,ntb_type,description,impact_level,affected_products,frequency,resolution_status,source
+NTB-WA-001,Nigeria,Lagos-Cotonou,Border Closure,Intermittent border closures affecting trade flows,Critical,All products,Recurring,Partially Resolved,Multiple reports
+NTB-WA-002,Benin,Cotonou-Niamey,Roadblocks/Checkpoints,Multiple unofficial checkpoints between Cotonou and Niger border,High,All products,Persistent,Unresolved,AfDB corridor study
+NTB-WA-003,Ghana,Tema-Ouagadougou,Weighbridge Delays,Excessive weighing and inspection procedures at Tema port exit,Medium,Heavy goods;Containers,Daily,Under Review,SITRAM report
+NTB-WA-004,Cote d'Ivoire,Abidjan-Ouagadougou,Documentation Requirements,Complex and varying documentation requirements at border posts,High,All products,Daily,Improving,ECOWAS report
+NTB-WA-005,Senegal,Dakar-Bamako,Customs Procedures,Lengthy customs clearance procedures at Dakar port,High,All imports,Daily,Improving,World Bank LPI
+NTB-WA-006,Togo,Lome-Ouagadougou,Transit Fees,High transit fees and charges on corridor route,Medium,Transit goods,Daily,Under Review,AfDB corridor report
+NTB-WA-007,Nigeria,Apapa Port,Port Congestion,Severe port congestion at Apapa causing 2-3 week delays,Critical,All containers,Persistent,Partially Resolved,NPA reports
+NTB-WA-008,Nigeria,All borders,Import Prohibition List,Nigeria maintains a list of prohibited imports restricting trade,High,Textiles;Furniture;Footwear;Second-hand clothes,Persistent,Policy Issue,Nigerian Customs
+NTB-WA-009,Burkina Faso,Ouagadougou-Niamey,Poor Road Condition,Deteriorated road sections increasing travel time and costs,High,All products,Persistent,Under Rehabilitation,AfDB/AFTS-Db
+NTB-WA-010,Guinea,Conakry-Bamako,Informal Payments,Unofficial payments demanded at multiple checkpoints,High,All products,Daily,Unresolved,Corridor monitoring
+NTB-WA-011,Mali,Bamako-Dakar,Security Restrictions,Conflict-related road closures in northern Mali,Critical,All products,Intermittent,Ongoing Concern,Security reports
+NTB-WA-012,Niger,Niamey-Cotonou,Long Wait Times,Extended waiting at border posts due to limited staffing,Medium,All products,Daily,Under Review,ECOWAS IBET
+NTB-WA-013,Sierra Leone,Freetown-Conakry,Ferry Delays,Limited ferry services at border crossing points,Medium,All products,Daily,Infrastructure Gap,MRU report
+NTB-WA-014,Ghana,Aflao Border,Weekend/Holiday Closures,Border post operating limited hours affecting traders,Medium,Perishable goods;Informal trade,Weekly,Policy Issue,Ghana Customs
+NTB-WA-015,Cote d'Ivoire,Abidjan-Bamako,Sanitary/Phytosanitary,Non-harmonized SPS standards between countries,High,Agricultural products;Food,Persistent,Improving,ECOWAS SPS
+NTB-WA-016,ECOWAS,All corridors,Currency Conversion Barriers,Difficulty converting between local currencies;Lack of convertibility,High,All products,Persistent,Policy Issue,BCEAO/CBN
+NTB-WA-017,Nigeria,Seme Border,Multiple Agency Checks,Over 10 government agencies at border causing duplication,High,All products,Daily,Improving,Nigerian government reform
+NTB-WA-018,Senegal,Dakar-Bamako,Rail Infrastructure,Limited rail capacity and aging infrastructure on TRANSRAIL,High,Bulk goods;Fuel;Cement,Persistent,Under Rehabilitation,TRANSRAIL
+NTB-WA-019,Gambia,Banjul-Dakar,Bridge/Toll Issues,Toll fees and limited crossing infrastructure at Farafenni,Medium,All products,Daily,Partially Resolved,Senegambia Bridge
+NTB-WA-020,West Africa,All corridors,Language Barriers,Francophone-Anglophone communication issues at border posts,Medium,All products,Daily,Policy Issue,ECOWAS trade facilitation

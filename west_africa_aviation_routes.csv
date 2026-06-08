@@ -1,0 +1,13 @@
+route_id,route_name,countries,origin_airport,destination_airport,distance_km,route_type,operational_status,estimated_annual_passengers,carriers
+WA-AV-001,Lagos-Abidjan,Nigeria;Cote d'Ivoire,Lagos (LOS),Abidjan (ABJ),800,Regional Commercial,Operational,450000,Air Cote d'Ivoire;ASKY
+WA-AV-002,Accra-Lagos,Ghana;Nigeria,Accra (ACC),Lagos (LOS),450,Regional Commercial,Operational,800000,Air Peace;Africa World;ASKY
+WA-AV-003,Dakar-Bamako,Senegal;Mali,Dakar (DSS),Bamako (BKO),700,Regional Commercial,Operational,200000,Air Senegal;ASKY;Ethiopian
+WA-AV-004,Lagos-London,Nigeria;UK,Lagos (LOS),London (LHR),5100,Intercontinental,Operational,600000,British Airways;Virgin Atlantic;Air Peace
+WA-AV-005,Accra-Dubai,Ghana;UAE,Accra (ACC),Dubai (DXB),6200,Intercontinental,Operational,350000,Emirates;Ethiopian
+WA-AV-006,Abidjan-Paris,Cote d'Ivoire;France,Abidjan (ABJ),Paris (CDG),5000,Intercontinental,Operational,400000,Air France;Ethiopian
+WA-AV-007,Dakar-Paris,Senegal;France,Dakar (DSS),Paris (CDG),4200,Intercontinental,Operational,350000,Air Senegal;Air France
+WA-AV-008,Lagos-Johannesburg,Nigeria;South Africa,Lagos (LOS),Johannesburg (JNB),4600,Continental,Operational,200000,Air Peace;South African
+WA-AV-009,Lome-Addis Ababa,Togo;Ethiopia,Lome (LFW),Addis Ababa (ADD),4200,Continental Hub,Operational,300000,Ethiopian Airlines
+WA-AV-010,Freetown-Monrovia,Sierra Leone;Liberia,Freetown (FNA),Monrovia (ROB),350,Regional,Suspended,15000,Historically - Various carriers
+WA-AV-011,Abuja-Abidjan,Nigeria;Cote d'Ivoire,Abuja (ABV),Abidjan (ABJ),1400,Regional Commercial,Operational,150000,Air Cote d'Ivoire;Air Peace
+WA-AV-012,Ouagadougou-Abidjan,Burkina Faso;Cote d'Ivoire,Ouagadougou (OUA),Abidjan (ABJ),850,Regional Commercial,Operational,180000,Air Cote d'Ivoire;ASKY

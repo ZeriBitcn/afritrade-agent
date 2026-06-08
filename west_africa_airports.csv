@@ -1,0 +1,27 @@
+airport_id,airport_name,country,city,iata_code,latitude_longitude,airport_type,annual_passengers,notes
+NG-AP-001,Murtala Muhammed International Airport,Nigeria,Lagos,LOS,6.5774;3.3210,International,8500000,Largest in West Africa;Hub for Air Peace;Arik Air
+NG-AP-002,Nnamdi Azikiwe International Airport,Nigeria,Abuja,ABV,9.0068;7.2705,International,5200000,Capital city airport;Growing hub
+NG-AP-003,Aminu Kano International Airport,Nigeria,Kano,KAN,12.0483;8.5247,International,1200000,Northern Nigeria gateway;Pilgrim flights
+NG-AP-004,Port Harcourt International Airport,Nigeria,Port Harcourt,PHC,4.8764;7.0011,International,1800000,Oil and gas industry hub
+NG-AP-005,Mallam Aminu Kano International,Nigeria,Kano,KAN,12.0483;8.5247,International,1200000,Northern trade gateway
+GH-AP-001,Kotoka International Airport,Ghana,Accra,ACC,5.6052;-0.1718,International,3200000,Ghana's main airport;Regional hub;Terminal 3 expansion
+GH-AP-002,Kumasi Airport,Ghana,Kumasi,KMS,6.7142;-1.5918,Domestic/Regional,350000,Second city;Domestic flights
+GH-AP-003,Tamale Airport,Ghana,Tamale,TML,9.5614;-0.8575,Domestic/Regional,120000,Northern Ghana;Upgraded for AfCFTA hub
+CI-AP-001,Felix Houphouet-Boigny International,Cote d'Ivoire,Abidjan,ABJ,5.2614;-3.9267,International,2800000,Air Cote d'Ivoire hub;Major West African hub
+CI-AP-002,Port Bouet Airport,Cote d'Ivoire,Abidjan,ABJ,5.2614;-3.9267,International,2800000,Same as Felix Houphouet-Boigny
+SN-AP-001,Blaise Diagne International Airport,Senegal,Dakar,DSS,14.6725;-17.0719,International,2500000,New airport (2017);Air Senegal hub
+SN-AP-002,Leopold Sedar Senghor Airport,Senegal,Dakar,DKR,14.7400;-17.4900,Closed/Military,0,Replaced by DSS;Now military
+BJ-AP-001,Cadjehoun Airport,Benin,Cotonou,COO,6.3572;2.3833,International,650000,Benin's main airport;Regional connections
+TG-AP-001,Gnassingbe Eyadema International,Togo,Lome,LFW,6.1631;1.2533,International,800000,ASKY Airlines hub;Ethiopian partner
+BF-AP-001,Ouagadougou Airport,Burkina Faso,Ouagadougou,OUA,12.3536;-1.5128,International,600000,Burkina Faso main airport
+BF-AP-002,Bobo Dioulasso Airport,Burkina Faso,Bobo Dioulasso,BOY,11.1586;-4.3328,Domestic/Regional,80000,Second city airport
+ML-AP-001,Modibo Keita International Airport,Mali,Bamako,BKO,12.3372;-7.9461,International,700000,Mali's main airport;ASKY serves
+NE-AP-001,Diori Hamani International Airport,Niger,Niamey,NIM,13.4814;2.1811,International,350000,Niger's main airport;Limited connections
+GN-AP-001,Conakry International Airport,Guinea,Conakry,CKY,9.5736;-13.6128,International,400000,Guinea's main airport;Rehabilitation needed
+SL-AP-001,Lungi International Airport,Sierra Leone,Freetown,FNA,8.6189;-13.1961,International,200000,Requires ferry/helicopter to Freetown
+LR-AP-001,Roberts International Airport,Liberia,Monrovia,ROB,6.2328;-10.3611,International,150000,Post-war;Limited international services
+GM-AP-001,Banjul International Airport,Gambia,Banjul,BJL,13.3431;-16.6497,International,180000,Tourism-driven;Charter flights
+GW-AP-001,Osvaldo Vieira International,Guinea-Bissau,Bissau,OXB,11.8961;-15.6539,International,50000,Very limited service;TAP Portugal
+CV-AP-001,Amilcar Cabral International,Cape Verde,Sal,SID,16.7414;-22.9472,International,1200000,Major tourist hub;TACV/Cabo Verde Airlines
+CV-AP-002,Nelson Mandela International,Cape Verde,Santiago,RAI,14.9247;-23.4894,International,600000,Praia airport;Domestic and regional
+MR-AP-001,Nouakchott-Oumtounsy International,Mauritania,Nouakchott,NKC,18.1000;-15.9500,International,250000,New airport (2016);Mauritania Airlines hub

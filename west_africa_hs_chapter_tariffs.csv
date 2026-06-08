@@ -1,0 +1,98 @@
+hs_chapter,chapter_description,ecowas_cet_rate,nigeria_applied_rate,ghana_applied_rate,senegal_applied_rate,cote_divoire_applied_rate,afcfta_category,afcfta_reduction_timeline
+01,Live animals,5%,5%,5%,5%,5%,A,5-year linear
+02,Meat and edible meat offal,5%,5%,5%,5%,5%,A,5-year linear
+03,Fish and crustaceans,0%,0%,0%,0%,0%,A,Immediate
+04,Dairy produce; birds eggs; honey,5%,5%,5%,5%,5%,B,10-year linear
+05,Products of animal origin nes,5%,5%,5%,5%,5%,A,5-year linear
+06,Live trees and other plants,5%,5%,5%,5%,5%,A,5-year linear
+07,Edible vegetables,0%,5%,0%,0%,0%,A,Immediate/5-year
+08,Edible fruit and nuts,5%,5%,5%,5%,5%,A,5-year linear
+09,"Coffee, tea, mate and spices",5%,5%,5%,5%,5%,A,5-year linear
+10,Cereals,5%,5%,5%,5%,5%,B,10-year linear
+11,Products of the milling industry,10%,10%,10%,10%,10%,A,5-year linear
+12,Oil seeds and oleaginous fruit,5%,5%,5%,5%,5%,A,5-year linear
+13,Lac; gums and resins,5%,5%,5%,5%,5%,A,5-year linear
+14,Vegetable plaiting materials,5%,5%,5%,5%,5%,A,5-year linear
+15,Animal or vegetable fats and oils,10%,10%,10%,10%,10%,A,5-year linear
+16,Preparations of meat/fish,20%,20%,20%,20%,20%,A,5-year linear
+17,Sugars and sugar confectionery,20%,20%,20%,20%,20%,B,10-year linear
+18,Cocoa and cocoa preparations,5%,5%,5%,5%,5%,A,5-year linear
+19,Preparations of cereals/flour,20%,20%,20%,20%,20%,A,5-year linear
+20,Preparations of vegetables/fruit,20%,20%,20%,20%,20%,A,5-year linear
+21,Miscellaneous edible preparations,20%,20%,20%,20%,20%,A,5-year linear
+22,"Beverages, spirits and vinegar",20%,35%,20%,20%,20%,C,13-year linear (LDC)/Excluded
+23,Residues and waste food industry,5%,5%,5%,5%,5%,A,5-year linear
+24,Tobacco and manufactured tobacco,35%,35%,35%,35%,35%,C,Excluded/13-year
+25,Salt; sulphur; earths and stone,5%,5%,5%,5%,5%,A,5-year linear
+26,"Ores, slag and ash",5%,5%,5%,5%,5%,A,Immediate
+27,"Mineral fuels, oils and waxes",5%,5%,5%,5%,5%,B,10-year linear
+28,Inorganic chemicals,5%,5%,5%,5%,5%,A,5-year linear
+29,Organic chemicals,5%,5%,5%,5%,5%,A,5-year linear
+30,Pharmaceutical products,0%,0%,0%,0%,0%,A,Immediate
+31,Fertilizers,5%,5%,5%,5%,5%,A,5-year linear
+32,Tanning/dyeing extracts,10%,10%,10%,10%,10%,A,5-year linear
+33,Essential oils; cosmetics,20%,20%,20%,20%,20%,A,5-year linear
+34,"Soap, washing preparations",20%,20%,20%,20%,20%,A,5-year linear
+35,Albuminoidal substances; glues,5%,5%,5%,5%,5%,A,5-year linear
+36,Explosives; pyrotechnic products,10%,10%,10%,10%,10%,A,5-year linear
+37,Photographic or cinematographic goods,5%,5%,5%,5%,5%,A,5-year linear
+38,Miscellaneous chemical products,5%,5%,5%,5%,5%,A,5-year linear
+39,Plastics and articles thereof,10%,10%,10%,10%,10%,A,5-year linear
+40,Rubber and articles thereof,10%,10%,10%,10%,10%,A,5-year linear
+41,Raw hides and skins; leather,10%,10%,10%,10%,10%,A,5-year linear
+42,Articles of leather; travel goods,20%,20%,20%,20%,20%,A,5-year linear
+43,Furskins and artificial fur,20%,20%,20%,20%,20%,A,5-year linear
+44,Wood and articles of wood,10%,10%,10%,10%,10%,A,5-year linear
+45,Cork and articles of cork,10%,10%,10%,10%,10%,A,5-year linear
+46,Manufactures of straw/esparto,10%,10%,10%,10%,10%,A,5-year linear
+47,Pulp of wood; recovered paper,5%,5%,5%,5%,5%,A,5-year linear
+48,Paper and paperboard; articles,10%,10%,10%,10%,10%,A,5-year linear
+49,Printed books; newspapers,0%,0%,0%,0%,0%,A,Immediate
+50,Silk and silk waste,5%,5%,5%,5%,5%,A,5-year linear
+51,Wool and animal hair,5%,5%,5%,5%,5%,A,5-year linear
+52,Cotton and cotton yarn,10%,10%,10%,10%,10%,A,5-year linear
+53,Other vegetable textile fibres,5%,5%,5%,5%,5%,A,5-year linear
+54,Man-made filaments,10%,10%,10%,10%,10%,A,5-year linear
+55,Man-made staple fibres,10%,10%,10%,10%,10%,A,5-year linear
+56,"Wadding, felt and nonwovens",10%,10%,10%,10%,10%,A,5-year linear
+57,Carpets and other floor coverings,20%,20%,20%,20%,20%,A,5-year linear
+58,Special woven fabrics; tapestry,20%,20%,20%,20%,20%,A,5-year linear
+59,Impregnated/coated textile fabrics,10%,10%,10%,10%,10%,A,5-year linear
+60,Knitted or crocheted fabrics,10%,10%,10%,10%,10%,A,5-year linear
+61,"Articles of apparel, knitted",20%,20%,20%,20%,20%,A,5-year linear
+62,"Articles of apparel, not knitted",20%,20%,20%,20%,20%,A,5-year linear
+63,Other made up textile articles,20%,35%,20%,20%,20%,B,10-year linear
+64,Footwear; gaiters; parts,20%,20%,20%,20%,20%,A,5-year linear
+65,Headgear and parts,20%,20%,20%,20%,20%,A,5-year linear
+66,Umbrellas; walking-sticks,20%,20%,20%,20%,20%,A,5-year linear
+67,Prepared feathers; artificial flowers,20%,20%,20%,20%,20%,A,5-year linear
+68,Articles of stone; plaster; cement,10%,10%,10%,10%,10%,A,5-year linear
+69,Ceramic products,20%,20%,20%,20%,20%,A,5-year linear
+70,Glass and glassware,20%,20%,20%,20%,20%,A,5-year linear
+71,Natural/cultured pearls; precious stones,5%,5%,5%,5%,5%,A,5-year linear
+72,Iron and steel,5%,5%,5%,5%,5%,A,5-year linear
+73,Articles of iron or steel,10%,10%,10%,10%,10%,A,5-year linear
+74,Copper and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+75,Nickel and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+76,Aluminium and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+77,Magnesium and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+78,Lead and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+79,Zinc and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+80,Tin and articles thereof,5%,5%,5%,5%,5%,A,5-year linear
+81,Other base metals; cermets,5%,5%,5%,5%,5%,A,5-year linear
+82,"Tools, implements, cutlery",10%,10%,10%,10%,10%,A,5-year linear
+83,Miscellaneous articles of base metal,10%,10%,10%,10%,10%,A,5-year linear
+84,Machinery and mechanical appliances,5%,5%,5%,5%,5%,A,5-year linear
+85,Electrical machinery and equipment,5%,5%,5%,5%,5%,A,5-year linear
+86,Railway locomotives; track equipment,5%,5%,5%,5%,5%,A,5-year linear
+87,Vehicles other than railway,20%,35%,20%,20%,20%,C,13-year linear (LDC)/Excluded
+88,Aircraft; spacecraft; parts,5%,5%,5%,5%,5%,A,5-year linear
+89,"Ships, boats and floating structures",5%,5%,5%,5%,5%,A,5-year linear
+90,"Optical, photographic; medical instruments",5%,5%,5%,5%,5%,A,5-year linear
+91,Clocks and watches and parts,20%,20%,20%,20%,20%,A,5-year linear
+92,Musical instruments; parts,20%,20%,20%,20%,20%,A,5-year linear
+93,Arms and ammunition; parts,35%,35%,35%,35%,35%,C,Excluded
+94,Furniture; bedding; lighting,20%,20%,20%,20%,20%,A,5-year linear
+95,"Toys, games and sports requisites",20%,20%,20%,20%,20%,A,5-year linear
+96,Miscellaneous manufactured articles,20%,20%,20%,20%,20%,A,5-year linear
+97,Works of art; collectors pieces,0%,0%,0%,0%,0%,A,Immediate

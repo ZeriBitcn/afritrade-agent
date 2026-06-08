@@ -1,0 +1,27 @@
+country_a_code,country_b_code,relationship_type,border_length_km,notes
+NGA,BEN,BORDERS,773,Multiple crossing points;Active trade corridor
+NGA,NER,BORDERS,1497,Major trade route;Petroleum corridor
+NGA,GHA,BORDERS,No direct land border,Connected via Benin/Togo corridor
+BEN,TGO,BORDERS,644,Coastal corridor;High traffic
+TGO,GHA,BORDERS,876,Coastal corridor;High traffic
+GHA,CIV,BORDERS,668,Coastal and inland crossings
+CIV,BFA,BORDERS,878,Major trade corridor;SITARAIL
+CIV,MLI,BORDERS,532,Bamako-Abidjan route
+CIV,GIN,BORDERS,610,Forest region crossings
+CIV,LBR,BORDERS,716,Limited crossing points
+SEN,GMB,BORDERS,740,Gambia river crossings;Senegambia bridge
+SEN,GIN,BORDERS,330,Casamance region;Ferry crossings
+SEN,MLI,BORDERS,419,Eastern Senegal crossing
+SEN,MRT,BORDERS,813,Northern border;Cross-Saharan route
+MLI,BFA,BORDERS,1325,Sahelian crossings
+MLI,NER,BORDERS,821,Sahelian route;Low traffic
+BFA,NER,BORDERS,628,Eastern corridor
+BFA,TGO,BORDERS,131,Short border;Active trade
+BFA,BEN,BORDERS,386,Northern crossings
+GIN,SLE,BORDERS,652,Forest region;Active informal trade
+GIN,LBR,BORDERS,563,Forest crossings;Limited infrastructure
+GIN,GNB,BORDERS,386,Southern Guinea crossings
+SLE,LBR,BORDERS,299,Coastal and inland crossings
+NER,NER-CIV,BORDERS,No direct border,Via Burkina Faso
+MRT,MLI,BORDERS,2237,Long desert border;Limited crossings
+GMB,SEN,BORDERS,740,Enclave within Senegal

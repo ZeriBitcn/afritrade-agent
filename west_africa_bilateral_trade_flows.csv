@@ -1,0 +1,65 @@
+reporter_country,partner_country,year,trade_flow_type,value_usd_millions,top_hs2_chapters,top_commodities
+Nigeria,Ghana,2023,Export,850,27,Mineral fuels (petroleum)
+Nigeria,Ghana,2023,Import,420,18,Cocoa; prepared foods
+Nigeria,Cote d'Ivoire,2023,Export,620,27,Mineral fuels (petroleum)
+Nigeria,Cote d'Ivoire,2023,Import,380,18;72,Cocoa;Iron and steel
+Nigeria,Senegal,2023,Export,310,27,Mineral fuels (petroleum)
+Nigeria,Senegal,2023,Import,95,03;24,Fish;Tobacco
+Nigeria,Benin,2023,Export,1800,27;84,Petroleum;Machinery
+Nigeria,Benin,2023,Import,450,08;09,Fruits;Coffee/tea
+Nigeria,Togo,2023,Export,280,27;48,Petroleum;Paper products
+Nigeria,Togo,2023,Import,150,12;52,Oil seeds;Cotton
+Nigeria,Niger,2023,Export,520,27;25,Petroleum;Salt/sulphur
+Nigeria,Niger,2023,Import,180,26;12,Ores;Oil seeds
+Nigeria,Burkina Faso,2023,Export,160,27;84,Petroleum;Machinery
+Nigeria,Burkina Faso,2023,Import,45,12;52,Oil seeds;Cotton
+Nigeria,Mali,2023,Export,200,27;84,Petroleum;Machinery
+Nigeria,Mali,2023,Import,35,12;26,Oil seeds;Ores
+Ghana,Cote d'Ivoire,2023,Export,380,18;71,Cocoa;Precious stones
+Ghana,Cote d'Ivoire,2023,Import,290,18;15,Cocoa;Animal/vegetable fats
+Ghana,Togo,2023,Export,320,27;18,Petroleum;Cocoa
+Ghana,Togo,2023,Import,180,27;84,Petroleum;Machinery
+Ghana,Burkina Faso,2023,Export,290,27;84,Petroleum;Machinery
+Ghana,Burkina Faso,2023,Import,85,12;52,Oil seeds;Cotton
+Ghana,Benin,2023,Export,150,27;18,Petroleum;Cocoa
+Ghana,Benin,2023,Import,95,08;09,Fruits;Coffee/tea
+Ghana,Nigeria,2023,Export,420,18;44,Cocoa;Wood products
+Ghana,Nigeria,2023,Import,850,27;84,Petroleum;Machinery
+Cote d'Ivoire,Burkina Faso,2023,Export,480,27;84,Petroleum;Machinery
+Cote d'Ivoire,Burkina Faso,2023,Import,110,12;52,Oil seeds;Cotton
+Cote d'Ivoire,Mali,2023,Export,540,27;84,Petroleum;Machinery
+Cote d'Ivoire,Mali,2023,Import,120,12;09,Oil seeds;Coffee/tea
+Cote d'Ivoire,Ghana,2023,Export,290,18;15,Cocoa;Animal/vegetable fats
+Cote d'Ivoire,Ghana,2023,Import,380,18;71,Cocoa;Precious stones
+Cote d'Ivoire,Nigeria,2023,Export,380,18;72,Cocoa;Iron and steel
+Cote d'Ivoire,Nigeria,2023,Import,620,27,Petroleum
+Cote d'Ivoire,Senegal,2023,Export,210,18;15,Cocoa;Fats and oils
+Cote d'Ivoire,Senegal,2023,Import,180,03;24,Fish;Tobacco
+Senegal,Mali,2023,Export,420,27;84,Petroleum;Machinery
+Senegal,Mali,2023,Import,75,12;26,Oil seeds;Ores
+Senegal,Guinea,2023,Export,180,27;48,Petroleum;Paper products
+Senegal,Guinea,2023,Import,55,26;12,Ores;Oil seeds
+Senegal,Gambia,2023,Export,95,27;84,Petroleum;Machinery
+Senegal,Gambia,2023,Import,25,12;03,Oil seeds;Fish
+Senegal,Nigeria,2023,Export,95,03;24,Fish;Tobacco
+Senegal,Nigeria,2023,Import,310,27,Petroleum
+Benin,Nigeria,2023,Export,450,08;09,Fruits;Coffee/tea
+Benin,Nigeria,2023,Import,1800,27;84,Petroleum;Machinery
+Togo,Burkina Faso,2023,Export,210,27;84,Petroleum;Machinery
+Togo,Burkina Faso,2023,Import,55,12;52,Oil seeds;Cotton
+Togo,Ghana,2023,Export,180,27;84,Petroleum;Machinery
+Togo,Ghana,2023,Import,320,27;18,Petroleum;Cocoa
+Burkina Faso,Cote d'Ivoire,2023,Export,110,12;52,Oil seeds;Cotton
+Burkina Faso,Cote d'Ivoire,2023,Import,480,27;84,Petroleum;Machinery
+Burkina Faso,Ghana,2023,Export,85,12;52,Oil seeds;Cotton
+Burkina Faso,Ghana,2023,Import,290,27;84,Petroleum;Machinery
+Burkina Faso,Togo,2023,Export,55,12;52,Oil seeds;Cotton
+Burkina Faso,Togo,2023,Import,210,27;84,Petroleum;Machinery
+Mali,Senegal,2023,Export,75,12;26,Oil seeds;Ores
+Mali,Senegal,2023,Import,420,27;84,Petroleum;Machinery
+Mali,Cote d'Ivoire,2023,Export,120,12;09,Oil seeds;Coffee/tea
+Mali,Cote d'Ivoire,2023,Import,540,27;84,Petroleum;Machinery
+Niger,Nigeria,2023,Export,180,26;12,Ores;Oil seeds
+Niger,Nigeria,2023,Import,520,27;25,Petroleum;Salt/sulphur
+Guinea,Senegal,2023,Export,55,26;12,Ores;Oil seeds
+Guinea,Senegal,2023,Import,180,27;48,Petroleum;Paper products

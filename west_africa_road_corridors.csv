@@ -1,0 +1,21 @@
+corridor_id,corridor_name,countries,start_city,end_city,distance_km,road_type,operational_status,estimated_annual_trade_volume_usd_m,key_commodities
+WA-RC-001,Abidjan-Lagos Coastal Corridor,Cote d'Ivoire;Ghana;Togo;Benin;Nigeria,Abidjan,Lagos,1000,Primary/Trunk,Operational,4200,Petroleum products;Manufactured goods;Food products;Textiles
+WA-RC-002,Dakar-Bamako Corridor (Trans-Sahel),Senegal;Mali,Dakar,Bamako,1250,Primary/Trunk,Operational,1800,Agricultural products;Fuel;Manufactured goods;Cement
+WA-RC-003,Abidjan-Ouagadougou Corridor,Cote d'Ivoire;Burkina Faso,Abidjan,Ouagadougou,1120,Primary/Trunk,Operational,1500,Fuel;Fertilizer;Manufactured goods;Cotton;Gold
+WA-RC-004,Lome-Ouagadougou Corridor,Togo;Burkina Faso,Lome,Ouagadougou,980,Primary/Trunk,Operational,900,Fuel;Consumer goods;Fertilizer;Agricultural products
+WA-RC-005,Cotonou-Niamey Corridor,Benin;Niger,Cotonou,Niamey,1060,Primary/Trunk,Operational,1100,Fuel;Food products;Cement;Manufactured goods
+WA-RC-006,Lagos-Kano Corridor,Nigeria,Lagos,Kano,1020,Primary/Trunk,Operational,3500,Petroleum products;Agricultural goods;Textiles;Manufactured goods
+WA-RC-007,Tema-Ouagadougou Corridor,Ghana;Burkina Faso,Tema,Ouagadougou,1050,Primary/Trunk,Operational,800,Fuel;Fertilizer;Consumer goods;Shea nuts;Gold
+WA-RC-008,Dakar-Niamey Trans-Sahel Route,Senegal;Mali;Niger,Dakar,Niamey,2200,Primary/Secondary,Operational,600,Livestock;Agricultural products;Fuel;Consumer goods
+WA-RC-009,Conakry-Bamako Corridor,Guinea;Mali,Conakry,Bamako,900,Primary/Trunk,Operational,450,Fuel;Rice;Manufactured goods;Gold;Bauxite
+WA-RC-010,Freetown-Conakry Corridor,Sierra Leone;Guinea,Freetown,Conakry,280,Primary,Operational,200,Petroleum;Rice;Consumer goods;Iron ore
+WA-RC-011,Monrovia-Abidjan Corridor,Liberia;Cote d'Ivoire,Monrovia,Abidjan,650,Primary/Secondary,Partially Operational,150,Rubber;Timber;Agricultural products;Fuel
+WA-RC-012,Abuja-Niamey Corridor,Nigeria;Niger,Abuja,Niamey,850,Primary/Secondary,Operational,400,Fuel;Food products;Cement;Livestock
+WA-RC-013,Accra-Lome Corridor,Ghana;Togo,Accra,Lome,190,Primary/Trunk,Operational,1200,Petroleum products;Manufactured goods;Food products
+WA-RC-014,Lagos-Cotonou Corridor,Nigeria;Benin,Lagos,Cotonou,130,Primary/Trunk,Operational,2200,Petroleum products;Textiles;Food products;Second-hand vehicles
+WA-RC-015,Ouagadougou-Niamey Corridor,Burkina Faso;Niger,Ouagadougou,Niamey,550,Secondary,Operational,200,Livestock;Agricultural products;Consumer goods
+WA-RC-016,Bamako-Ouagadougou Corridor,Mali;Burkina Faso,Bamako,Ouagadougou,700,Primary/Secondary,Operational,250,Agricultural products;Livestock;Consumer goods;Gold
+WA-RC-017,Dakar-Conakry Coastal Corridor,Senegal;Guinea,Dakar,Conakry,750,Primary/Secondary,Partially Operational,300,Fuel;Rice;Fish;Agricultural products
+WA-RC-018,Banjul-Dakar Corridor,Gambia;Senegal,Banjul,Dakar,340,Primary,Operational,250,Groundnuts;Fish;Fuel;Consumer goods
+WA-RC-019,Bissau-Conakry Corridor,Guinea-Bissau;Guinea,Bissau,Conakry,400,Secondary,Partially Operational,80,Cashew nuts;Fish;Rice;Fuel
+WA-RC-020,Lagos-Abidjan via Coastal Highway,Nigeria;Benin;Togo;Ghana;Cote d'Ivoire,Lagos,Abidjan,1050,Primary/Trunk (Highway),Under Development,5000,All commodities - Multi-modal corridor

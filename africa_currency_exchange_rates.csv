@@ -1,0 +1,45 @@
+currency_code,currency_name,country,country_code,region,central_bank,is_ecowas_member,is_waemu_member,is_afcfta_member,rate_per_usd,fetch_timestamp
+NGN,Nigerian Naira,Nigeria,NGA,West Africa,Central Bank of Nigeria (CBN),Yes,No,Yes,1360.4267,2026-06-08 18:39:06 UTC
+GHS,Ghanaian Cedi,Ghana,GHA,West Africa,Bank of Ghana (BoG),Yes,No,Yes,11.8217,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Benin,BEN,West Africa,BCEAO (Central Bank of West African States),Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Burkina Faso,BFA,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Cote d'Ivoire,CIV,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Guinea-Bissau,GNB,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Mali,MLI,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Niger,NER,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Senegal,SEN,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+XOF,West African CFA Franc,Togo,TGO,West Africa,BCEAO,Yes,Yes,Yes,568.7704,2026-06-08 18:39:06 UTC
+GMD,Gambian Dalasi,Gambia,GMB,West Africa,Central Bank of The Gambia,Yes,No,Yes,74.1768,2026-06-08 18:39:06 UTC
+SLL,Sierra Leonean Leone,Sierra Leone,SLE,West Africa,Bank of Sierra Leone,Yes,No,Yes,24557.0521,2026-06-08 18:39:06 UTC
+LRD,Liberian Dollar,Liberia,LBR,West Africa,Central Bank of Liberia,Yes,No,Yes,182.5299,2026-06-08 18:39:06 UTC
+GNF,Guinean Franc,Guinea,GIN,West Africa,Central Bank of the Republic of Guinea,Yes,No,Yes,8774.8131,2026-06-08 18:39:06 UTC
+CVE,Cape Verdean Escudo,Cape Verde,CPV,West Africa,Bank of Cape Verde,Yes,No,Yes,110.45,2026-06-08 18:39:06 UTC
+MRO,Mauritanian Ouguiya,Mauritania,MRT,West Africa,Central Bank of Mauritania,Yes,No,Yes,39.85,2026-06-08 18:39:06 UTC
+KES,Kenyan Shilling,Kenya,KEN,East Africa,Central Bank of Kenya,No,No,Yes,129.2606,2026-06-08 18:39:06 UTC
+TZS,Tanzanian Shilling,Tanzania,TZA,East Africa,Bank of Tanzania,No,No,Yes,2622.2511,2026-06-08 18:39:06 UTC
+UGX,Ugandan Shilling,Uganda,UGA,East Africa,Bank of Uganda,No,No,Yes,3742.4481,2026-06-08 18:39:06 UTC
+RWF,Rwandan Franc,Rwanda,RWA,East Africa,National Bank of Rwanda,No,No,Yes,1464.7512,2026-06-08 18:39:06 UTC
+BIF,Burundian Franc,Burundi,BDI,East Africa,Bank of the Republic of Burundi,No,No,Yes,2983.5785,2026-06-08 18:39:06 UTC
+ETB,Ethiopian Birr,Ethiopia,ETH,East Africa,National Bank of Ethiopia,No,No,Yes,159.3487,2026-06-08 18:39:06 UTC
+SOS,Somali Shilling,Somalia,SOM,East Africa,Central Bank of Somalia,No,No,Yes,571.4,2026-06-08 18:39:06 UTC
+CDF,Congolese Franc,DR Congo,COD,Central Africa,Central Bank of Congo,No,No,Yes,2301.6281,2026-06-08 18:39:06 UTC
+MGA,Malagasy Ariary,Madagascar,MDG,Southern Africa,Central Bank of Madagascar,No,No,Yes,4206.4879,2026-06-08 18:39:06 UTC
+MWK,Malawian Kwacha,Malawi,MWI,Southern Africa,Reserve Bank of Malawi,No,No,Yes,1737.7366,2026-06-08 18:39:06 UTC
+ZMW,Zambian Kwacha,Zambia,ZMB,Southern Africa,Bank of Zambia,No,No,Yes,17.5567,2026-06-08 18:39:06 UTC
+BWP,Botswana Pula,Botswana,BWA,Southern Africa,Bank of Botswana,No,No,Yes,13.4732,2026-06-08 18:39:06 UTC
+ZAR,South African Rand,South Africa,ZAF,Southern Africa,South African Reserve Bank,No,No,Yes,16.5412,2026-06-08 18:39:06 UTC
+NAD,Namibian Dollar,Namibia,NAM,Southern Africa,Bank of Namibia,No,No,Yes,16.5426,2026-06-08 18:39:06 UTC
+SZL,Eswatini Lilangeni,Eswatini,SWZ,Southern Africa,Central Bank of Eswatini,No,No,Yes,16.5426,2026-06-08 18:39:06 UTC
+LSL,Lesotho Loti,Lesotho,LSO,Southern Africa,Central Bank of Lesotho,No,No,Yes,16.5426,2026-06-08 18:39:06 UTC
+AOA,Angolan Kwanza,Angola,AGO,Southern Africa,National Bank of Angola,No,No,Yes,920.8467,2026-06-08 18:39:06 UTC
+MZN,Mozambican Metical,Mozambique,MOZ,Southern Africa,Bank of Mozambique,No,No,Yes,63.5747,2026-06-08 18:39:06 UTC
+MAD,Moroccan Dirham,Morocco,MAR,North Africa,Bank Al-Maghrib,No,No,Yes,9.2079,2026-06-08 18:39:06 UTC
+TND,Tunisian Dinar,Tunisia,TUN,North Africa,Central Bank of Tunisia,No,No,Yes,2.913,2026-06-08 18:39:06 UTC
+DZD,Algerian Dinar,Algeria,DZA,North Africa,Bank of Algeria,No,No,Yes,133.3975,2026-06-08 18:39:06 UTC
+EGP,Egyptian Pound,Egypt,EGY,North Africa,Central Bank of Egypt,No,No,Yes,51.8153,2026-06-08 18:39:06 UTC
+XAF,Central African CFA Franc,Cameroon,CMR,Central Africa,BEAC,No,No,Yes,610.25,2026-06-08 18:39:06 UTC
+XAF,Central African CFA Franc,Gabon,GAB,Central Africa,BEAC,No,No,Yes,610.25,2026-06-08 18:39:06 UTC
+XAF,Central African CFA Franc,Congo Republic,COG,Central Africa,BEAC,No,No,Yes,610.25,2026-06-08 18:39:06 UTC
+XAF,Central African CFA Franc,Chad,TCD,Central Africa,BEAC,No,No,Yes,610.25,2026-06-08 18:39:06 UTC
+XAF,Central African CFA Franc,Central African Republic,CAF,Central Africa,BEAC,No,No,Yes,610.25,2026-06-08 18:39:06 UTC
+XAF,Central African CFA Franc,Equatorial Guinea,GNQ,Central Africa,BEAC,No,No,Yes,610.25,2026-06-08 18:39:06 UTC
