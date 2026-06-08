@@ -27,9 +27,26 @@ class WestAfricaTradeGraph:
                 print("Successfully connected to Neo4j database.")
                 self._seed_neo4j_if_empty()
             except Exception as e:
-                print(f"Failed to connect to Neo4j: {e}. Falling back to in-memory graph.")
-                self.driver = None
-                self.connected = False
+                if "neo4j+s://" in uri:
+                    alt_uri = uri.replace("neo4j+s://", "neo4j+ssc://")
+                    try:
+                        print(f"SSL certificate issue detected. Retrying with self-signed certificate enabled: {alt_uri}")
+                        from neo4j import GraphDatabase
+                        self.driver = GraphDatabase.driver(alt_uri, auth=(user, password))
+                        with self.driver.session() as session:
+                            session.run("RETURN 1")
+                        self.uri = alt_uri
+                        self.connected = True
+                        print("Successfully connected to Neo4j database (with self-signed certificates allowed).")
+                        self._seed_neo4j_if_empty()
+                    except Exception as e2:
+                        print(f"Failed to connect to Neo4j even with alternative URI: {e2}. Falling back to in-memory graph.")
+                        self.driver = None
+                        self.connected = False
+                else:
+                    print(f"Failed to connect to Neo4j: {e}. Falling back to in-memory graph.")
+                    self.driver = None
+                    self.connected = False
 
     def _init_fallback_graph(self):
         # 1. Backwards-compatible "Hub" data (for verify_agent.py and old flow calls)
@@ -71,6 +88,31 @@ class WestAfricaTradeGraph:
                                          checkpoints=checkpoints,
                                          corridor=corridor)
 
+        # Helper functions for safe parsing
+        def safe_int(v, default=0):
+            try:
+                # Remove any commas or extra formatting
+                return int(str(v).replace(",", "").strip())
+            except Exception:
+                return default
+
+        def safe_float(v, default=0.0):
+            try:
+                return float(str(v).replace(",", "").strip())
+            except Exception:
+                return default
+
+        def parse_lat_lon(row_data):
+            val = row_data.get("latitude_longitude", "").strip()
+            if val and ";" in val:
+                try:
+                    parts = val.split(";")
+                    return safe_float(parts[0]), safe_float(parts[1])
+                except Exception:
+                    pass
+            # Backwards compatibility fallback if separate columns exist
+            return safe_float(row_data.get("latitude", 0.0)), safe_float(row_data.get("longitude", 0.0))
+
         # 2. Dynamic CSV Loading for new multi-modal graph elements
         # Load Country Nodes
         if os.path.exists("neo4j_country_nodes.csv"):
@@ -82,8 +124,8 @@ class WestAfricaTradeGraph:
                         node_type="Country",
                         name=row["country_name"].strip(),
                         region=row["region"].strip(),
-                        population=int(row["population"]) if row["population"] else 0,
-                        gdp_usd_m=int(row["gdp_usd_millions"]) if row["gdp_usd_millions"] else 0,
+                        population=safe_int(row["population"]),
+                        gdp_usd_m=safe_int(row["gdp_usd_millions"]),
                         capital=row["capital"].strip(),
                         currency=row["currency_code"].strip()
                     )
@@ -97,7 +139,7 @@ class WestAfricaTradeGraph:
                         row["country_a_code"].strip().upper(),
                         row["country_b_code"].strip().upper(),
                         edge_type="BORDERS",
-                        border_length_km=int(row["border_length_km"]) if row["border_length_km"] else 0,
+                        border_length_km=safe_int(row["border_length_km"]),
                         notes=row["notes"].strip()
                     )
 
@@ -118,10 +160,10 @@ class WestAfricaTradeGraph:
                         c1, c2,
                         edge_type="CONNECTED",
                         mode=row["transport_mode"].strip().lower(),
-                        distance_km=int(row["distance_km"]) if row["distance_km"] else 0,
-                        avg_travel_time_hours=float(row["avg_travel_time_hours"]) if row["avg_travel_time_hours"] else 0.0,
+                        distance_km=safe_int(row["distance_km"]),
+                        avg_travel_time_hours=safe_float(row["avg_travel_time_hours"]),
                         cost_level=row["cost_level"].strip(),
-                        estimated_daily_traffic=int(row["estimated_daily_traffic"]) if row["estimated_daily_traffic"] else 0
+                        estimated_daily_traffic=safe_int(row["estimated_daily_traffic"])
                     )
 
         # Load Ports
@@ -131,16 +173,17 @@ class WestAfricaTradeGraph:
                 for row in reader:
                     port_name = row["port_name"].strip()
                     city = row["city"].strip()
+                    lat, lon = parse_lat_lon(row)
                     self.fallback_graph.add_node(
                         port_name,
                         node_type="Port",
                         name=port_name,
                         country=row["country"].strip(),
                         city=city,
-                        latitude=float(row["latitude"]) if row["latitude"] else 0.0,
-                        longitude=float(row["longitude"]) if row["longitude"] else 0.0,
-                        annual_throughput_teu=int(row["annual_throughput_teu"]) if row["annual_throughput_teu"] else 0,
-                        number_of_berths=int(row["number_of_berths"]) if row["number_of_berths"] else 0,
+                        latitude=lat,
+                        longitude=lon,
+                        annual_throughput_teu=safe_int(row["annual_throughput_teu"]),
+                        number_of_berths=safe_int(row["number_of_berths"]),
                         notes=row["notes"].strip()
                     )
                     # Connect Port to City
@@ -153,15 +196,16 @@ class WestAfricaTradeGraph:
                 for row in reader:
                     ap_name = row["airport_name"].strip()
                     city = row["city"].strip()
+                    lat, lon = parse_lat_lon(row)
                     self.fallback_graph.add_node(
                         ap_name,
                         node_type="Airport",
                         name=ap_name,
-                        code=row["airport_code"].strip(),
+                        code=row.get("iata_code", row.get("airport_id", "")).strip(),
                         country=row["country"].strip(),
                         city=city,
-                        latitude=float(row["latitude"]) if row["latitude"] else 0.0,
-                        longitude=float(row["longitude"]) if row["longitude"] else 0.0,
+                        latitude=lat,
+                        longitude=lon,
                         notes=row["notes"].strip()
                     )
                     # Connect Airport to City

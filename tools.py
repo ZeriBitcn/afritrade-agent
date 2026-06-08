@@ -78,7 +78,7 @@ def route_finder_tool(start_hub: str, end_hub: str, neo4j_config: dict = None) -
     if not uri:
         secrets = load_secrets()
         uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
-        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        user = secrets.get("NEO4J_USER") or secrets.get("NEO4J_USERNAME") or os.getenv("NEO4J_USER")
         password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
         
     graph = WestAfricaTradeGraph(uri, user, password)
@@ -111,7 +111,7 @@ def border_finder_tool(country: str, neo4j_config: dict = None) -> str:
     if not uri:
         secrets = load_secrets()
         uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
-        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        user = secrets.get("NEO4J_USER") or secrets.get("NEO4J_USERNAME") or os.getenv("NEO4J_USER")
         password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
         
     graph = WestAfricaTradeGraph(uri, user, password)
@@ -133,7 +133,7 @@ def multi_modal_route_tool(from_city: str, to_city: str, mode: str = None, neo4j
     if not uri:
         secrets = load_secrets()
         uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
-        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        user = secrets.get("NEO4J_USER") or secrets.get("NEO4J_USERNAME") or os.getenv("NEO4J_USER")
         password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
         
     graph = WestAfricaTradeGraph(uri, user, password)
@@ -155,7 +155,7 @@ def port_throughput_tool(min_teu: int = 1000000, neo4j_config: dict = None) -> s
     if not uri:
         secrets = load_secrets()
         uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
-        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        user = secrets.get("NEO4J_USER") or secrets.get("NEO4J_USERNAME") or os.getenv("NEO4J_USER")
         password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
         
     graph = WestAfricaTradeGraph(uri, user, password)

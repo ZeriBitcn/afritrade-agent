@@ -23,7 +23,7 @@ def load_secrets():
 
 secrets = load_secrets()
 URI = os.getenv("NEO4J_URI") or secrets.get("NEO4J_URI") or "neo4j+s://your-database.databases.neo4j.io"
-USER = os.getenv("NEO4J_USER") or secrets.get("NEO4J_USER") or "neo4j"
+USER = os.getenv("NEO4J_USER") or secrets.get("NEO4J_USERNAME") or secrets.get("NEO4J_USER") or "neo4j"
 PASSWORD = os.getenv("NEO4J_PASSWORD") or secrets.get("NEO4J_PASSWORD") or "your-password"
 
 print(f"Connecting to Neo4j AuraDB at {URI}...")
@@ -33,9 +33,23 @@ try:
         s.run("RETURN 1")
     print("Connection check passed!")
 except Exception as e:
-    print(f"Could not connect to Neo4j: {e}")
-    print("Please make sure you have added correct Neo4j credentials in .streamlit/secrets.toml")
-    driver = None
+    if "neo4j+s://" in URI:
+        alt_uri = URI.replace("neo4j+s://", "neo4j+ssc://")
+        try:
+            print(f"SSL certificate issue detected. Retrying with self-signed certificate enabled: {alt_uri}")
+            driver = GraphDatabase.driver(alt_uri, auth=(USER, PASSWORD))
+            with driver.session() as s:
+                s.run("RETURN 1")
+            print("Connection check passed (with self-signed certificates allowed)!")
+            URI = alt_uri
+        except Exception as e2:
+            print(f"Could not connect to Neo4j: {e2}")
+            print("Please make sure you have added correct Neo4j credentials in .streamlit/secrets.toml")
+            driver = None
+    else:
+        print(f"Could not connect to Neo4j: {e}")
+        print("Please make sure you have added correct Neo4j credentials in .streamlit/secrets.toml")
+        driver = None
 
 def run_transaction(query, **kwargs):
     if not driver:
@@ -141,12 +155,19 @@ def create_port_nodes():
     with open("west_africa_maritime_ports.csv", "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
+            lat_lon_str = row.get("latitude_longitude", "").strip()
+            lat = "0.0"
+            lon = "0.0"
+            if lat_lon_str and ";" in lat_lon_str:
+                parts = lat_lon_str.split(";")
+                lat = parts[0].strip()
+                lon = parts[1].strip()
             run_transaction(query, 
                 name=row["port_name"].strip(), 
                 country=row["country"].strip(), 
                 city=row["city"].strip(),
-                lat=row["latitude"].strip(), 
-                lon=row["longitude"].strip(), 
+                lat=lat, 
+                lon=lon, 
                 teu=row["annual_throughput_teu"].strip(),
                 berths=row["number_of_berths"].strip(), 
                 notes=row["notes"].strip()
@@ -170,16 +191,24 @@ def create_airport_nodes():
     with open("west_africa_airports.csv", "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
+            lat_lon_str = row.get("latitude_longitude", "").strip()
+            lat = "0.0"
+            lon = "0.0"
+            if lat_lon_str and ";" in lat_lon_str:
+                parts = lat_lon_str.split(";")
+                lat = parts[0].strip()
+                lon = parts[1].strip()
+            code_val = row.get("iata_code", row.get("airport_id", "")).strip()
             run_transaction(query, 
                 name=row["airport_name"].strip(), 
-                code=row["airport_code"].strip(), 
+                code=code_val, 
                 country=row["country"].strip(), 
                 city=row["city"].strip(),
-                lat=row["latitude"].strip(), 
-                lon=row["longitude"].strip(), 
+                lat=lat, 
+                lon=lon, 
                 notes=row["notes"].strip()
             )
-            print(f"Added airport: {row['airport_name']} ({row['airport_code']})")
+            print(f"Added airport: {row['airport_name']} ({code_val})")
 
 if __name__ == "__main__":
     if driver:

@@ -363,7 +363,7 @@ with st.sidebar:
     st.markdown("#### 🗄️ Graph Database")
 
     _neo4j_uri_secret  = st.secrets.get("NEO4J_URI")      or os.getenv("NEO4J_URI", "")
-    _neo4j_user_secret = st.secrets.get("NEO4J_USER")     or os.getenv("NEO4J_USER", "")
+    _neo4j_user_secret = st.secrets.get("NEO4J_USER")     or st.secrets.get("NEO4J_USERNAME") or os.getenv("NEO4J_USER", "")
     _neo4j_pass_secret = st.secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD", "")
 
     if _neo4j_uri_secret and _neo4j_user_secret and _neo4j_pass_secret:

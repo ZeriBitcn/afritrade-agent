@@ -18,8 +18,14 @@ def section(title):
 section("Test 1: graph_db — Local NetworkX Graph")
 
 try:
+    from tools import load_secrets
+    secrets = load_secrets()
+    uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
+    user = secrets.get("NEO4J_USER") or secrets.get("NEO4J_USERNAME") or os.getenv("NEO4J_USER")
+    password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
+
     from graph_db import WestAfricaTradeGraph
-    g = WestAfricaTradeGraph()   # no Neo4j creds → falls back to networkx
+    g = WestAfricaTradeGraph(uri, user, password)
 
     # Check nodes loaded
     nodes = list(g.fallback_graph.nodes)
