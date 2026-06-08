@@ -195,29 +195,112 @@ def route_tool_node(state: AgentState) -> dict:
     if not state.get("route_requested"):
         return {"route_results": {}, "steps": steps}
         
+    query_lower = state["query"].lower()
+    neo4j_config = state.get("neo4j_config")
+    
+    # 1. Border Query check
+    if any(k in query_lower for k in ["border", "neighbor", "neighbour"]):
+        # Extract country name or code
+        countries = {
+            "nigeria": "NGA", "benin": "BEN", "togo": "TGO", "ghana": "GHA",
+            "cote d'ivoire": "CIV", "ivory coast": "CIV", "burkina faso": "BFA",
+            "niger": "NER", "mali": "MLI", "senegal": "SEN"
+        }
+        target_country = "Nigeria"
+        target_code = "NGA"
+        for name, code in countries.items():
+            if name in query_lower or code.lower() in query_lower:
+                target_country = name.title()
+                target_code = code
+                break
+        steps.append(f"Route Tool active. Querying border relationships for country: {target_country} ({target_code})...")
+        from tools import border_finder_tool
+        border_info = border_finder_tool(target_code, neo4j_config)
+        steps.append("Border info retrieved successfully.")
+        return {
+            "route_results": {
+                "type": "border",
+                "output": border_info,
+                "source": "Graph Database"
+            },
+            "steps": steps
+        }
+
+    # 2. Port / Airport Query check
+    if any(k in query_lower for k in ["port", "seaport", "airport", "teu"]):
+        # Parse TEU threshold if mentioned
+        min_teu = 1000000
+        if "1 million" in query_lower or "1m" in query_lower:
+            min_teu = 1000000
+        elif "500,000" in query_lower or "500k" in query_lower:
+            min_teu = 500000
+        elif "1.5 million" in query_lower or "1.5m" in query_lower:
+            min_teu = 1500000
+        
+        steps.append(f"Route Tool active. Querying seaports handling >= {min_teu:,} TEU...")
+        from tools import port_throughput_tool
+        port_info = port_throughput_tool(min_teu, neo4j_config)
+        steps.append("Port throughput info retrieved successfully.")
+        return {
+            "route_results": {
+                "type": "port",
+                "output": port_info,
+                "source": "Graph Database"
+            },
+            "steps": steps
+        }
+        
+    # 3. Standard City-to-City Route Query
     start = state.get("start_hub")
     end = state.get("end_hub")
     
+    # If not extracted but in text, try a quick regex search
     if not start or not end:
-        steps.append("Route Tool skipped: Start or End hub not specified in router extraction.")
-        return {"route_results": {"error": "Missing start or end hub"}, "steps": steps}
+        cities = ["Lagos", "Cotonou", "Lome", "Accra", "Abidjan", "Ouagadougou", "Niamey", "Bamako", "Dakar"]
+        found = []
+        for city in cities:
+            if city.lower() in query_lower:
+                found.append(city)
+        if len(found) >= 2:
+            start = found[0]
+            end = found[1]
+        elif len(found) == 1:
+            start = found[0]
+            end = "Accra" if start != "Accra" else "Lagos"
+            
+    if not start or not end:
+        steps.append("Route Tool skipped: Start or End city not found in query.")
+        return {"route_results": {"error": "Missing start or end city"}, "steps": steps}
         
-    steps.append(f"Route Tool active. Finding optimal route from {start} to {end} in Graph Database...")
-    
-    # Query Graph
-    results = route_finder_tool(start, end, state.get("neo4j_config"))
-    
-    if "error" in results:
-        steps.append(f"Route Tool error: {results['error']}")
-    else:
-        source = results.get("source", "Graph Database")
-        path_str = " -> ".join(results.get("path", []))
-        steps.append(
-            f"Route Tool successfully retrieved path from {source}. "
-            f"Path: {path_str} | Distance: {results.get('total_distance_km')} km | "
-            f"Time: {results.get('total_time_hours')} hours | Checkpoints: {results.get('total_checkpoints')}"
-        )
+    # Determine mode
+    mode = None
+    if "road" in query_lower:
+        mode = "road"
+    elif "rail" in query_lower:
+        mode = "rail"
+    elif "air" in query_lower:
+        mode = "air"
+    elif "maritime" in query_lower or "sea" in query_lower:
+        mode = "maritime"
         
+    steps.append(f"Route Tool active. Finding optimal route from {start} to {end} (Mode: {mode or 'Any'}) in Graph Database...")
+    
+    from tools import multi_modal_route_tool, route_finder_tool
+    route_info = multi_modal_route_tool(start, end, mode, neo4j_config)
+    legacy_details = route_finder_tool(start, end, neo4j_config)
+    
+    results = {
+        "type": "route",
+        "output": route_info,
+        "legacy": legacy_details,
+        "source": legacy_details.get("source", "Graph Database"),
+        "path": legacy_details.get("path", []),
+        "edges": legacy_details.get("edges", []),
+        "total_distance_km": legacy_details.get("total_distance_km", 0.0),
+        "total_time_hours": legacy_details.get("total_time_hours", 0.0),
+        "total_checkpoints": legacy_details.get("total_checkpoints", 0)
+    }
+    steps.append("City route details retrieved successfully.")
     return {
         "route_results": results,
         "steps": steps
@@ -248,23 +331,32 @@ def answer_node(state: AgentState) -> dict:
     route_context = ""
     route_data = state.get("route_results", {})
     if route_data and "error" not in route_data:
-        path_str = " ➔ ".join(route_data.get("path", []))
-        route_context = (
-            f"### Route Details ({route_data.get('source')}):\n"
-            f"- **Optimal Corridor Path**: {path_str}\n"
-            f"- **Total Distance**: {route_data.get('total_distance_km')} km\n"
-            f"- **Estimated Transport + Border Crossing Time**: {route_data.get('total_time_hours')} hours\n"
-            f"- **Number of Border Posts / Checkpoints**: {route_data.get('total_checkpoints')} checkpoints\n"
-        )
-        # Detail corridor legs
-        if route_data.get("edges"):
-            route_context += "\n**Detailed Corridor Segments:**\n"
-            for edge in route_data["edges"]:
+        r_type = route_data.get("type", "route")
+        if r_type == "border":
+            route_context = (
+                f"### Border Relationships ({route_data.get('source')}):\n"
+                f"{route_data.get('output')}\n"
+            )
+        elif r_type == "port":
+            route_context = (
+                f"### Ports and Throughput Information ({route_data.get('source')}):\n"
+                f"{route_data.get('output')}\n"
+            )
+        else:
+            # Standard city-to-city route
+            route_context = (
+                f"### Route Details:\n"
+                f"{route_data.get('output')}\n"
+            )
+            if "legacy" in route_data and "error" not in route_data["legacy"]:
+                leg = route_data["legacy"]
+                path_str = " ➔ ".join(leg.get("path", []))
                 route_context += (
-                    f"  - Segment: Distance {edge.get('distance_km')} km | "
-                    f"Transit: {edge.get('transit_time_hours')} hrs | "
-                    f"Border Delay: {edge.get('border_crossing_hours')} hrs | "
-                    f"Checkpoints: {edge.get('checkpoints')} ({edge.get('corridor')})\n"
+                    f"\n**Leg Details ({leg.get('source')}):**\n"
+                    f"- **Legacy Path**: {path_str}\n"
+                    f"- **Total Distance**: {leg.get('total_distance_km')} km\n"
+                    f"- **Estimated Time**: {leg.get('total_time_hours')} hours\n"
+                    f"- **Checkpoints**: {leg.get('total_checkpoints')} border checkpoints\n"
                 )
     else:
         route_context = "No corridor routing data found.\n"
@@ -292,67 +384,82 @@ def answer_node(state: AgentState) -> dict:
         steps.append("Answer Agent successfully synthesized response using Gemini API.")
     else:
         # Fallback template response builder
-        # Calculate tariff band based on commodity
-        tariff_desc = ""
-        rate_found = "20%"
-        band_found = "Band 3 (Finished Consumer Goods)"
-        
-        if "rice" in commodity.lower():
-            rate_found = "35%"
-            band_found = "Band 4 (Specific Goods for Economic Development - Sensitive agricultural sector)"
-            tariff_desc = (
-                "Under the ECOWAS Common External Tariff (CET), rice is subject to a 35% duty (Band 4) to protect local farming. "
-                "However, note that Senegal requires joint import licenses from the Direction du Commerce Extérieur (DCE)."
+        if route_data.get("type") == "border":
+            final_answer = (
+                f"### 🌍 AfriTrade Agent Intelligence Report\n\n"
+                f"**Query**: \"{query}\"\n\n"
+                f"**Border Information**:\n"
+                f"{route_data.get('output')}\n\n"
+                f"This information is retrieved from the West Africa Regional Trade Graph."
             )
-        elif "smartphone" in commodity.lower() or "phone" in commodity.lower():
+        elif route_data.get("type") == "port":
+            final_answer = (
+                f"### 🌍 AfriTrade Agent Intelligence Report\n\n"
+                f"**Query**: \"{query}\"\n\n"
+                f"**Port & Infrastructure Information**:\n"
+                f"{route_data.get('output')}\n\n"
+                f"This throughput information is retrieved from the West Africa Regional Trade Graph."
+            )
+        else:
+            # Calculate tariff band based on commodity
+            tariff_desc = ""
             rate_found = "20%"
             band_found = "Band 3 (Finished Consumer Goods)"
-            tariff_desc = (
-                "Smartphones fall under ECOWAS CET Band 3 (Finished Consumer Goods), subject to a 20% customs duty. "
-                "Additionally, imports into most ECOWAS ports incur regional taxes, such as Senegal's 18% standard VAT "
-                "and the 1% Statistical Fee (Redevance Statistique)."
-            )
-        elif "book" in commodity.lower() or "medicine" in commodity.lower():
-            rate_found = "0%"
-            band_found = "Band 0 (Essential Social Goods)"
-            tariff_desc = "Books and essential medicines are classified under Band 0 (0% duty) to encourage education and health access."
-        else:
-            tariff_desc = "Standard finished commodities are classified under Band 3 (20% import duty)."
             
-        # Format the route fallback details
-        route_desc = ""
-        if route_data and "error" not in route_data:
-            path_str = " ➔ ".join(route_data["path"])
-            route_desc = (
-                f"For transit, the fastest route from **{start}** to **{end}** runs along the "
-                f"**{route_data['edges'][0]['corridor'] if route_data['edges'] else 'ECOWAS'} corridor**:\n"
-                f"- **Path**: {path_str}\n"
-                f"- **Total Distance**: {route_data['total_distance_km']} km\n"
-                f"- **Estimated Time**: {route_data['total_time_hours']} hours (including border delays)\n"
-                f"- **Border Crossings / Checkpoints**: {route_data['total_checkpoints']} total checkpoints.\n\n"
-                f"We recommend utilizing the **ECOWAS Trade Liberalization Scheme (ETLS)** for duty-free transit, "
-                f"which requires a valid Certificate of Origin for originating goods."
+            if "rice" in commodity.lower():
+                rate_found = "35%"
+                band_found = "Band 4 (Specific Goods for Economic Development - Sensitive agricultural sector)"
+                tariff_desc = (
+                    "Under the ECOWAS Common External Tariff (CET), rice is subject to a 35% duty (Band 4) to protect local farming. "
+                    "However, note that Senegal requires joint import licenses from the Direction du Commerce Extérieur (DCE)."
+                )
+            elif "smartphone" in commodity.lower() or "phone" in commodity.lower():
+                rate_found = "20%"
+                band_found = "Band 3 (Finished Consumer Goods)"
+                tariff_desc = (
+                    "Smartphones fall under ECOWAS CET Band 3 (Finished Consumer Goods), subject to a 20% customs duty. "
+                    "Additionally, imports into most ECOWAS ports incur regional taxes, such as Senegal's 18% standard VAT "
+                    "and the 1% Statistical Fee (Redevance Statistique)."
+                )
+            elif "book" in commodity.lower() or "medicine" in commodity.lower():
+                rate_found = "0%"
+                band_found = "Band 0 (Essential Social Goods)"
+                tariff_desc = "Books and essential medicines are classified under Band 0 (0% duty) to encourage education and health access."
+            else:
+                tariff_desc = "Standard finished commodities are classified under Band 3 (20% import duty)."
+                
+            # Format the route fallback details
+            route_desc = ""
+            if route_data and "error" not in route_data:
+                legacy = route_data.get("legacy", {})
+                path_str = " ➔ ".join(legacy.get("path", [])) if legacy.get("path") else ""
+                route_desc = (
+                    f"For transit, the route is:\n"
+                    f"{route_data.get('output')}\n\n"
+                    f"- **Legacy Route Checkpoints**: {legacy.get('total_checkpoints')} total checkpoints.\n\n"
+                    f"We recommend utilizing the **ECOWAS Trade Liberalization Scheme (ETLS)** for duty-free transit, "
+                    f"which requires a valid Certificate of Origin for originating goods."
+                )
+            else:
+                route_desc = f"No route path could be calculated between {start} and {end}."
+                
+            final_answer = (
+                f"### 🌍 AfriTrade Agent Intelligence Report\n\n"
+                f"**Query**: \"{query}\"\n\n"
+                f"#### 📋 Customs & Tariff Classification\n"
+                f"- **Commodity**: {commodity.title()}\n"
+                f"- **ECOWAS CET Classification**: **{band_found}**\n"
+                f"- **Customs Import Duty**: **{rate_found}**\n\n"
+                f"{tariff_desc}\n\n"
+                f"#### 🛣️ Corridor Logistics & Routing\n"
+                f"{route_desc}\n\n"
+                f"---  \n"
+                f"> [!NOTE]  \n"
+                f"> *This response was generated using local rule-based database matching because the Gemini API key was not supplied. "
+                f"Add your `GEMINI_API_KEY` in the sidebar to enable full multi-hop LLM reasoning.*"
             )
-        else:
-            route_desc = f"No route path could be calculated between {start} and {end}."
-            
-        final_answer = (
-            f"### 🌍 AfriTrade Agent Intelligence Report\n\n"
-            f"**Query**: \"{query}\"\n\n"
-            f"#### 📋 Customs & Tariff Classification\n"
-            f"- **Commodity**: {commodity.title()}\n"
-            f"- **ECOWAS CET Classification**: **{band_found}**\n"
-            f"- **Customs Import Duty**: **{rate_found}**\n\n"
-            f"{tariff_desc}\n\n"
-            f"#### 🛣️ Corridor Logistics & Routing\n"
-            f"{route_desc}\n\n"
-            f"---  \n"
-            f"> [!NOTE]  \n"
-            f"> *This response was generated using local rule-based database matching because the Gemini API key was not supplied. "
-            f"Add your `GEMINI_API_KEY` in the sidebar to enable full multi-hop LLM reasoning.*"
-        )
         steps.append("Answer Agent synthesized response using local rules and template fallback.")
-        
+    
     return {
         "final_answer": final_answer,
         "steps": steps

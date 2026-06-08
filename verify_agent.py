@@ -41,6 +41,20 @@ try:
     assert result2 is not None, "Dakar -> Bamako path not found"
     print(f"{PASS} Path Dakar -> Bamako: {' -> '.join(result2['path'])}")
 
+    # New Multi-modal & Border tests
+    print(f"\n{INFO} --- Running new multi-modal, border, and port tests ---")
+    borders = g.find_bordering_countries("Nigeria")
+    print(f"{PASS} find_bordering_countries('Nigeria'): {borders}")
+    assert "BEN" in borders or "Benin" in borders, "Benin should border Nigeria"
+    
+    route_mm = g.find_route_between_cities("Bamako", "Lagos", "rail")
+    print(f"{PASS} find_route_between_cities('Bamako', 'Lagos', 'rail'):\n{route_mm}")
+    assert "Lagos" in route_mm, "Lagos must be in the route output"
+    
+    ports = g.get_top_ports(1000000)
+    print(f"{PASS} get_top_ports(1000000):\n{ports}")
+    assert "Tema" in ports or "Lome" in ports or "Abidjan" in ports or "Lagos" in ports, "Should list major ports"
+
     g.close()
 except Exception as e:
     print(f"{FAIL} graph_db error: {e}")

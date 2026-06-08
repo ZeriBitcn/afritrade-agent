@@ -96,3 +96,69 @@ def route_finder_tool(start_hub: str, end_hub: str, neo4j_config: dict = None) -
             "total_time_hours": 0.0,
             "total_checkpoints": 0
         }
+
+def border_finder_tool(country: str, neo4j_config: dict = None) -> str:
+    """
+    Query the graph database for all countries bordering the target country.
+    """
+    uri = None
+    user = None
+    password = None
+    if neo4j_config:
+        uri = neo4j_config.get("uri")
+        user = neo4j_config.get("user")
+        password = neo4j_config.get("password")
+    if not uri:
+        secrets = load_secrets()
+        uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
+        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
+        
+    graph = WestAfricaTradeGraph(uri, user, password)
+    res = graph.find_bordering_countries(country)
+    graph.close()
+    return res
+
+def multi_modal_route_tool(from_city: str, to_city: str, mode: str = None, neo4j_config: dict = None) -> str:
+    """
+    Query the graph database for a route between two cities with optional mode filtering.
+    """
+    uri = None
+    user = None
+    password = None
+    if neo4j_config:
+        uri = neo4j_config.get("uri")
+        user = neo4j_config.get("user")
+        password = neo4j_config.get("password")
+    if not uri:
+        secrets = load_secrets()
+        uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
+        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
+        
+    graph = WestAfricaTradeGraph(uri, user, password)
+    res = graph.find_route_between_cities(from_city, to_city, mode)
+    graph.close()
+    return res
+
+def port_throughput_tool(min_teu: int = 1000000, neo4j_config: dict = None) -> str:
+    """
+    Query the graph database for ports handling at least the specified TEU.
+    """
+    uri = None
+    user = None
+    password = None
+    if neo4j_config:
+        uri = neo4j_config.get("uri")
+        user = neo4j_config.get("user")
+        password = neo4j_config.get("password")
+    if not uri:
+        secrets = load_secrets()
+        uri = secrets.get("NEO4J_URI") or os.getenv("NEO4J_URI")
+        user = secrets.get("NEO4J_USER") or os.getenv("NEO4J_USER")
+        password = secrets.get("NEO4J_PASSWORD") or os.getenv("NEO4J_PASSWORD")
+        
+    graph = WestAfricaTradeGraph(uri, user, password)
+    res = graph.get_top_ports(min_teu)
+    graph.close()
+    return res
