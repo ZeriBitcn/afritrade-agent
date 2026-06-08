@@ -25,6 +25,52 @@ def load_secrets():
                     secrets[match.group(1)] = match.group(2)
     return secrets
 
+def extract_layout_aware_text(page):
+    """Detect vertical gutters to split double-column PDFs, ensuring correct sentence flow."""
+    words = page.extract_words()
+    if not words:
+        return ""
+    
+    width = float(page.width)
+    height = float(page.height)
+    
+    # Analyze the middle region (40% to 60% of page width)
+    mid_start = int(0.4 * width)
+    mid_end = int(0.6 * width)
+    
+    overlap_counts = [0] * (mid_end - mid_start)
+    for w in words:
+        w_x0 = w["x0"]
+        w_x1 = w["x1"]
+        start_idx = max(mid_start, int(w_x0))
+        end_idx = min(mid_end, int(w_x1))
+        for x in range(start_idx, end_idx):
+            if 0 <= x - mid_start < len(overlap_counts):
+                overlap_counts[x - mid_start] += 1
+                
+    if not overlap_counts:
+        return page.extract_text() or ""
+        
+    min_overlap = min(overlap_counts)
+    
+    # If overlap in the gutter is low (allowing 3 header/footer lines crossing the center), split columns
+    if min_overlap < 4:
+        gutter_xs = [i + mid_start for i, count in enumerate(overlap_counts) if count == min_overlap]
+        gutter_center = sum(gutter_xs) / len(gutter_xs)
+        
+        left_bbox = (0, 0, gutter_center, height)
+        right_bbox = (gutter_center, 0, width, height)
+        
+        left_page = page.within_bbox(left_bbox)
+        right_page = page.within_bbox(right_bbox)
+        
+        left_text = left_page.extract_text() or ""
+        right_text = right_page.extract_text() or ""
+        
+        return left_text + "\n" + right_text
+    else:
+        return page.extract_text() or ""
+
 def main():
     # 1. Load configuration
     secrets = load_secrets()
@@ -83,7 +129,7 @@ def main():
             try:
                 with pdfplumber.open(pdf_path) as pdf:
                     for page_num, page in enumerate(pdf.pages):
-                        text = page.extract_text()
+                        text = extract_layout_aware_text(page)
                         if text and len(text.strip()) > 100:  # Skip empty or very short pages
                             documents.append({
                                 "text": text.strip(),

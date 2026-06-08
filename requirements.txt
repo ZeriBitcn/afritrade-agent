@@ -5,3 +5,6 @@ pdfplumber
 torch
 numpy
 pandas
+langgraph
+langchain-core
+neo4j
