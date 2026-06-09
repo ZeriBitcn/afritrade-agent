@@ -37,53 +37,65 @@ _GEMINI_MODEL = "gemini-2.5-flash"
 
 def call_gemini(prompt: str, api_key: str, system_instruction: str = None, max_retries: int = 3) -> str:
     import time
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{_GEMINI_MODEL}:generateContent?key={api_key}"
-    headers = {"Content-Type": "application/json"}
+    if not api_key:
+        return "Error: No API key provided."
 
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}]
-    }
-    if system_instruction:
-        payload["systemInstruction"] = {"parts": [{"text": system_instruction}]}
+    # Parse key pool (supports comma-separated string, list, or single key)
+    if isinstance(api_key, str):
+        keys = [k.strip() for k in api_key.split(",") if k.strip()]
+    elif isinstance(api_key, (list, tuple)):
+        keys = [str(k).strip() for k in api_key if str(k).strip()]
+    else:
+        keys = [str(api_key).strip()]
 
-    for attempt in range(max_retries):
-        try:
-            response = httpx.post(url, json=payload, headers=headers, timeout=30.0)
-            if response.status_code == 200:
-                res_json = response.json()
-                candidates = res_json.get("candidates", [])
-                if candidates:
-                    text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                    return text.strip()
-                return "Error: Empty generation response from Gemini."
-            elif response.status_code == 429:
-                # Quota exceeded — extract retry delay and wait
-                try:
-                    retry_info = response.json()
-                    delay_str = ""
-                    for detail in retry_info.get("error", {}).get("details", []):
-                        if detail.get("@type", "").endswith("RetryInfo"):
-                            delay_str = detail.get("retryDelay", "")
-                            break
-                    wait_secs = int(delay_str.replace("s", "")) if delay_str else (2 ** attempt) * 5
-                except Exception:
-                    wait_secs = (2 ** attempt) * 5
-                wait_secs = min(wait_secs, 60)  # cap at 60s
-                if attempt < max_retries - 1:
-                    time.sleep(wait_secs)
+    if not keys:
+        return "Error: No valid API key found in pool."
+
+    errors = []
+    for key_idx, key in enumerate(keys):
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{_GEMINI_MODEL}:generateContent?key={key}"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}]
+        }
+        if system_instruction:
+            payload["systemInstruction"] = {"parts": [{"text": system_instruction}]}
+
+        # For each key, we try up to 2 times. If it hits 429, we rotate immediately.
+        key_retries = 2
+        for attempt in range(key_retries):
+            try:
+                response = httpx.post(url, json=payload, headers=headers, timeout=30.0)
+                if response.status_code == 200:
+                    res_json = response.json()
+                    candidates = res_json.get("candidates", [])
+                    if candidates:
+                        text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        return text.strip()
+                    return "Error: Empty generation response from Gemini."
+                elif response.status_code == 429:
+                    print(f"Key {key_idx+1}/{len(keys)} hit 429 Quota Exceeded. Rotating to next key...")
+                    errors.append(f"Key {key_idx+1} (429 Quota Exceeded)")
+                    break  # Break attempt loop to rotate key immediately
+                else:
+                    err_msg = f"Key {key_idx+1} failed with HTTP {response.status_code}: {response.text[:100]}"
+                    print(err_msg)
+                    if attempt < key_retries - 1:
+                        time.sleep(1)
+                        continue
+                    errors.append(err_msg)
+                    break  # Rotate on other hard errors too
+            except Exception as e:
+                err_msg = f"Key {key_idx+1} request failed: {e}"
+                print(err_msg)
+                if attempt < key_retries - 1:
+                    time.sleep(1)
                     continue
-                return (
-                    "⚠️ The Gemini AI quota has been reached for today (free tier: 1,500 req/day). "
-                    "The route and tariff data below are sourced directly from the trade database."
-                )
-            else:
-                return f"Gemini API Error (HTTP {response.status_code}): {response.text}"
-        except Exception as e:
-            if attempt < max_retries - 1:
-                time.sleep(2 ** attempt)
-                continue
-            return f"Gemini request failed: {e}"
-    return "Gemini API unavailable after retries."
+                errors.append(err_msg)
+
+    # If all keys failed
+    joined_errors = "; ".join(errors)
+    return f"⚠️ All Gemini API keys in the rotation pool ({len(keys)} keys) have failed or reached their quota limit. Details: {joined_errors}"
 
 # 1. ROUTER NODE
 def router_node(state: AgentState) -> dict:
