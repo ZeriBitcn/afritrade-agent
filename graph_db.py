@@ -430,11 +430,11 @@ class WestAfricaTradeGraph:
                 with self.driver.session() as session:
                     res = session.run(query, from_city=from_city, to=to_city, modes=modes_filter).single()
                     if res and res["cities"]:
-                        return (f"Optimal multi-modal route from {from_city} to {to_city}: {' -> '.join(res['cities'])}\n"
-                                f"Transport Modes: {', '.join(res['modes'])}\n"
-                                f"Total Distance: {res['total_distance_km']} km\n"
-                                f"Estimated Travel Time: {res['total_hours']:.1f} hours\n"
-                                f"Source: Neo4j Database")
+                        return (f"Optimal multi-modal route from {from_city} to {to_city}: {' -> '.join(res['cities'])}  \n"
+                                f"**Transport Modes**: {', '.join(res['modes'])}  \n"
+                                f"**Total Distance**: {res['total_distance_km']} km  \n"
+                                f"**Estimated Travel Time**: {res['total_hours']:.1f} hours  \n"
+                                f"**Source**: Neo4j Database")
             except Exception as e:
                 print(f"Neo4j shortest route query failed: {e}")
                 
@@ -462,11 +462,11 @@ class WestAfricaTradeGraph:
                 total_dist += edge_data.get("distance_km", 0)
                 total_hours += edge_data.get("avg_travel_time_hours", 0.0)
                 
-            return (f"Optimal multi-modal route from {from_city} to {to_city}: {' -> '.join(path)}\n"
-                    f"Transport Modes: {', '.join(modes)}\n"
-                    f"Total Distance: {total_dist} km\n"
-                    f"Estimated Travel Time: {total_hours:.1f} hours\n"
-                    f"Source: Local Fallback Graph")
+            return (f"Optimal multi-modal route from {from_city} to {to_city}: {' -> '.join(path)}  \n"
+                    f"**Transport Modes**: {', '.join(modes)}  \n"
+                    f"**Total Distance**: {total_dist} km  \n"
+                    f"**Estimated Travel Time**: {total_hours:.1f} hours  \n"
+                    f"**Source**: Local Fallback Graph")
         except Exception as nx_err:
             print(f"NetworkX route finding failed: {nx_err}")
             return f"No route found between {from_city} and {to_city} (Mode: {mode or 'Any'})."

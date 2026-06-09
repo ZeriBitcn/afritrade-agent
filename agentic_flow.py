@@ -362,6 +362,8 @@ def answer_node(state: AgentState) -> dict:
     commodity = state.get("commodity", "goods")
     start = state.get("start_hub")
     end = state.get("end_hub")
+    route_requested = state.get("route_requested", True)
+    tariff_requested = state.get("tariff_requested", True)
     
     # Compile factual context from tools
     tariff_context = ""
@@ -518,19 +520,28 @@ def answer_node(state: AgentState) -> dict:
                     f"Add your `GEMINI_API_KEY` in the sidebar to enable full multi-hop LLM reasoning.*"
                 )
 
-            final_answer = (
-                f"### 🌍 AfriTrade Agent Intelligence Report\n\n"
+            report_parts = [
+                f"### 🌍 AfriTrade Agent Intelligence Report\n\n",
                 f"**Query**: \"{query}\"\n\n"
-                f"#### 📋 Customs & Tariff Classification\n"
-                f"- **Commodity**: {commodity.title()}\n"
-                f"- **ECOWAS CET Classification**: **{band_found}**\n"
-                f"- **Customs Import Duty**: **{rate_found}**\n\n"
-                f"{tariff_desc}\n\n"
-                f"#### 🛣️ Corridor Logistics & Routing\n"
-                f"{route_desc}\n\n"
+            ]
+            if tariff_requested:
+                report_parts.append(
+                    f"#### 📋 Customs & Tariff Classification\n"
+                    f"- **Commodity**: {commodity.title()}\n"
+                    f"- **ECOWAS CET Classification**: **{band_found}**\n"
+                    f"- **Customs Import Duty**: **{rate_found}**\n\n"
+                    f"{tariff_desc}\n\n"
+                )
+            if route_requested:
+                report_parts.append(
+                    f"#### 🛣️ Corridor Logistics & Routing\n"
+                    f"{route_desc}\n\n"
+                )
+            report_parts.append(
                 f"---  \n"
                 f"{note_content}"
             )
+            final_answer = "".join(report_parts)
         steps.append("Answer Agent synthesized response using local rules and template fallback.")
     
     return {
