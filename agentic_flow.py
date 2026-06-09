@@ -32,29 +32,58 @@ class AgentState(TypedDict):
     final_answer: str
 
 # Helper to call Gemini API
-def call_gemini(prompt: str, api_key: str, system_instruction: str = None) -> str:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+# Uses gemini-2.5-flash with automatic retry on 429 quota errors
+_GEMINI_MODEL = "gemini-2.5-flash"
+
+def call_gemini(prompt: str, api_key: str, system_instruction: str = None, max_retries: int = 3) -> str:
+    import time
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{_GEMINI_MODEL}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
-    
+
     payload = {
         "contents": [{"parts": [{"text": prompt}]}]
     }
     if system_instruction:
         payload["systemInstruction"] = {"parts": [{"text": system_instruction}]}
-        
-    try:
-        response = httpx.post(url, json=payload, headers=headers, timeout=30.0)
-        if response.status_code == 200:
-            res_json = response.json()
-            candidates = res_json.get("candidates", [])
-            if candidates:
-                text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                return text.strip()
-            return f"Error: Empty generation. Response: {res_json}"
-        else:
-            return f"Gemini API Error (HTTP {response.status_code}): {response.text}"
-    except Exception as e:
-        return f"Gemini request failed: {e}"
+
+    for attempt in range(max_retries):
+        try:
+            response = httpx.post(url, json=payload, headers=headers, timeout=30.0)
+            if response.status_code == 200:
+                res_json = response.json()
+                candidates = res_json.get("candidates", [])
+                if candidates:
+                    text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                    return text.strip()
+                return "Error: Empty generation response from Gemini."
+            elif response.status_code == 429:
+                # Quota exceeded — extract retry delay and wait
+                try:
+                    retry_info = response.json()
+                    delay_str = ""
+                    for detail in retry_info.get("error", {}).get("details", []):
+                        if detail.get("@type", "").endswith("RetryInfo"):
+                            delay_str = detail.get("retryDelay", "")
+                            break
+                    wait_secs = int(delay_str.replace("s", "")) if delay_str else (2 ** attempt) * 5
+                except Exception:
+                    wait_secs = (2 ** attempt) * 5
+                wait_secs = min(wait_secs, 60)  # cap at 60s
+                if attempt < max_retries - 1:
+                    time.sleep(wait_secs)
+                    continue
+                return (
+                    "⚠️ The Gemini AI quota has been reached for today (free tier: 1,500 req/day). "
+                    "The route and tariff data below are sourced directly from the trade database."
+                )
+            else:
+                return f"Gemini API Error (HTTP {response.status_code}): {response.text}"
+        except Exception as e:
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            return f"Gemini request failed: {e}"
+    return "Gemini API unavailable after retries."
 
 # 1. ROUTER NODE
 def router_node(state: AgentState) -> dict:
@@ -123,8 +152,12 @@ def router_node(state: AgentState) -> dict:
         
         response = call_gemini(prompt, api_key, system_instruction)
         try:
-            # Clean JSON codeblock if LLM formatted it
-            clean_res = re.sub(r'```json\s*|\s*```', '', response).strip()
+            # Robustly extract JSON block if conversational text wraps it
+            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+            if json_match:
+                clean_res = json_match.group(0).strip()
+            else:
+                clean_res = response.strip()
             parsed = json.loads(clean_res)
             
             route_requested = parsed.get("route_requested", route_requested)
@@ -272,16 +305,18 @@ def route_tool_node(state: AgentState) -> dict:
         steps.append("Route Tool skipped: Start or End city not found in query.")
         return {"route_results": {"error": "Missing start or end city"}, "steps": steps}
         
-    # Determine mode
-    mode = None
+    # Determine mode constraints
+    modes_found = []
     if "road" in query_lower:
-        mode = "road"
-    elif "rail" in query_lower:
-        mode = "rail"
-    elif "air" in query_lower:
-        mode = "air"
-    elif "maritime" in query_lower or "sea" in query_lower:
-        mode = "maritime"
+        modes_found.append("road")
+    if "rail" in query_lower:
+        modes_found.append("rail")
+    if "air" in query_lower:
+        modes_found.append("air")
+    if "maritime" in query_lower or "sea" in query_lower:
+        modes_found.append("maritime")
+        
+    mode = "+".join(modes_found) if modes_found else None
         
     steps.append(f"Route Tool active. Finding optimal route from {start} to {end} (Mode: {mode or 'Any'}) in Graph Database...")
     
@@ -381,8 +416,21 @@ def answer_node(state: AgentState) -> dict:
         )
         
         final_answer = call_gemini(prompt, api_key, system_instruction)
-        steps.append("Answer Agent successfully synthesized response using Gemini API.")
-    else:
+        
+        # Check if the response returned an error indicating API failure or quota limits
+        is_error = False
+        for err_marker in ["Error", "Gemini", "⚠️", "api", "failed"]:
+            if final_answer.strip().lower().startswith(err_marker.lower()):
+                is_error = True
+                break
+                
+        if not is_error:
+            steps.append("Answer Agent successfully synthesized response using Gemini API.")
+        else:
+            steps.append(f"Answer Agent: Gemini API call failed ({final_answer[:60]}...). Falling back to template-based synthesizer.")
+            api_key = None  # Force template response generation below with the error message prepended
+    
+    if not api_key:
         # Fallback template response builder
         if route_data.get("type") == "border":
             final_answer = (
@@ -443,6 +491,21 @@ def answer_node(state: AgentState) -> dict:
             else:
                 route_desc = f"No route path could be calculated between {start} and {end}."
                 
+            # Determine appropriate warning/fallback note
+            if "final_answer" in locals() and any(k in str(final_answer).lower() for k in ["error", "gemini", "⚠️", "api", "failed"]):
+                note_content = (
+                    f"> [!WARNING]  \n"
+                    f"> **Gemini API Error**: {final_answer}\n"
+                    f"> \n"
+                    f"> *The agent has successfully fallen back to rule-based database matching to provide factual information from the West Africa Regional Trade Graph and Qdrant.*"
+                )
+            else:
+                note_content = (
+                    f"> [!NOTE]  \n"
+                    f"> *This response was generated using local rule-based database matching because the Gemini API key was not supplied. "
+                    f"Add your `GEMINI_API_KEY` in the sidebar to enable full multi-hop LLM reasoning.*"
+                )
+
             final_answer = (
                 f"### 🌍 AfriTrade Agent Intelligence Report\n\n"
                 f"**Query**: \"{query}\"\n\n"
@@ -454,9 +517,7 @@ def answer_node(state: AgentState) -> dict:
                 f"#### 🛣️ Corridor Logistics & Routing\n"
                 f"{route_desc}\n\n"
                 f"---  \n"
-                f"> [!NOTE]  \n"
-                f"> *This response was generated using local rule-based database matching because the Gemini API key was not supplied. "
-                f"Add your `GEMINI_API_KEY` in the sidebar to enable full multi-hop LLM reasoning.*"
+                f"{note_content}"
             )
         steps.append("Answer Agent synthesized response using local rules and template fallback.")
     

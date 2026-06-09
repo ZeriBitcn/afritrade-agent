@@ -156,8 +156,7 @@ class WestAfricaTradeGraph:
                     if c2 not in self.fallback_graph:
                         self.fallback_graph.add_node(c2, node_type="City", name=c2)
                     
-                    self.fallback_graph.add_edge(
-                        c1, c2,
+                    edge_attrs = dict(
                         edge_type="CONNECTED",
                         mode=row["transport_mode"].strip().lower(),
                         distance_km=safe_int(row["distance_km"]),
@@ -165,6 +164,9 @@ class WestAfricaTradeGraph:
                         cost_level=row["cost_level"].strip(),
                         estimated_daily_traffic=safe_int(row["estimated_daily_traffic"])
                     )
+                    # Add both directions — road/rail routes are bidirectional
+                    self.fallback_graph.add_edge(c1, c2, **edge_attrs)
+                    self.fallback_graph.add_edge(c2, c1, **edge_attrs)
 
         # Load Ports
         if os.path.exists("west_africa_maritime_ports.csv"):
@@ -397,19 +399,28 @@ class WestAfricaTradeGraph:
         return f"No bordering countries found for {country_code_or_name} in Local Fallback Graph."
 
     def find_route_between_cities(self, from_city, to_city, mode=None):
-        """Finds shortest route between two cities, optionally filtered by mode."""
+        """Finds shortest route between two cities, optionally filtered by one or more modes."""
         from_city = str(from_city).strip().title()
         to_city = str(to_city).strip().title()
-        mode_clean = mode.strip().lower() if mode else None
         
+        # Parse mode filter to support multiple modes (e.g. "road+rail")
+        modes_filter = None
+        if mode:
+            # Handle "+" or "," separated modes
+            delimiter = "+" if "+" in mode else ("," if "," in mode else " ")
+            modes_filter = [m.strip().lower() for m in mode.split(delimiter) if m.strip()]
+            if not modes_filter:
+                modes_filter = None
+
         if self.connected and self.driver:
             try:
                 # Find path of CONNECTED relationships
+                # If modes_filter is provided, make sure all relationships use one of the allowed modes
                 query = """
                 MATCH (c1:City {name: $from_city})
                 MATCH (c2:City {name: $to})
                 MATCH path = shortestPath((c1)-[:CONNECTED*..8]-(c2))
-                WHERE $mode IS NULL OR ALL(r IN relationships(path) WHERE r.mode = $mode)
+                WHERE $modes IS NULL OR ALL(r IN relationships(path) WHERE toLower(r.mode) IN $modes)
                 RETURN [n IN nodes(path) | n.name] AS cities,
                        [r IN relationships(path) | r.mode] AS modes,
                        reduce(s = 0, r IN relationships(path) | s + r.distance_km) AS total_distance_km,
@@ -417,7 +428,7 @@ class WestAfricaTradeGraph:
                 LIMIT 1
                 """
                 with self.driver.session() as session:
-                    res = session.run(query, from_city=from_city, to=to_city, mode=mode_clean).single()
+                    res = session.run(query, from_city=from_city, to=to_city, modes=modes_filter).single()
                     if res and res["cities"]:
                         return (f"Optimal multi-modal route from {from_city} to {to_city}: {' -> '.join(res['cities'])}\n"
                                 f"Transport Modes: {', '.join(res['modes'])}\n"
@@ -429,11 +440,12 @@ class WestAfricaTradeGraph:
                 
         # Fallback to NetworkX
         try:
-            # Build sub-graph with only CONNECTED edges of matching mode
+            # Build sub-graph with only CONNECTED edges of matching modes
             sub_g = nx.DiGraph()
             for u, v, data in self.fallback_graph.edges(data=True):
                 if data.get("edge_type") == "CONNECTED":
-                    if mode_clean is None or data.get("mode") == mode_clean:
+                    edge_mode = str(data.get("mode", "road")).strip().lower()
+                    if modes_filter is None or edge_mode in modes_filter:
                         w = data.get("avg_travel_time_hours", 1.0)
                         sub_g.add_edge(u, v, weight=w, **data)
             
