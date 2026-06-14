@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The image shows the AfriTrade Agent interface (ECOWAS Trade Intelligence • Voice Assistant) with a dark theme.  \n\n- **Currency Conversion Card**: Yes, there is a currency conversion card.  \n- **Conversion Rate Displayed**: The conversion rate shown is 1 USD = 1,359.4946 NGN (Nigerian Naira).  \n- **Pipeline Visualization**: No, there is no pipeline visualization in the image.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781461149,
+  "id": "20260615021906fdf8ba81f4f94622",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260615021906fdf8ba81f4f94622",
+  "usage": {
+    "completion_tokens": 93,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1002,
+    "prompt_tokens_details": {
+      "cached_tokens": 6
+    },
+    "total_tokens": 1095
+  }
+}

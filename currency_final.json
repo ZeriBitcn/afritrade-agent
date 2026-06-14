@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot shows the AfriTrade Agent interface (ECOWAS Trade Intelligence + Voice Assistant) with a dark theme. There is **no currency conversion result card** visible.  \n\nThe exchange rate–related content shown is under the “Tariff Information” section:  \n- The product/HS chapter is “Cereals (Ch. 10)”.  \n- The tariff rate for rice imports from Senegal to Mali is **5%** (under the ECOWAS Common External Tariff, with additional context about rice’s classification under AfCFTA Category B and Senegal’s LDC status).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781461126,
+  "id": "202606150218435d8d9b268f354b41",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202606150218435d8d9b268f354b41",
+  "usage": {
+    "completion_tokens": 123,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 997,
+    "prompt_tokens_details": {
+      "cached_tokens": 6
+    },
+    "total_tokens": 1120
+  }
+}

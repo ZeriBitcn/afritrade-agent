@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/nismod/Africa-transport-database",
+    "name": "nismod/Africa-transport-database - GitHub",
+    "snippet": "The African Transport Systems Database includes 234 airports including their airline routes, 179 maritime ports and their connections with each ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.nature.com/articles/s41597-025-06483-7",
+    "name": "The African Transport Systems Database | Scientific Data - Nature",
+    "snippet": "The African Transport Systems Database includes 234 airports including their airline routes, 179 maritime ports and their connections with each ...",
+    "host_name": "www.nature.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://zenodo.org/records/17593244",
+    "name": "The African Transport Systems Database - a geospatial  - Zenodo",
+    "snippet": "The African Transport Systems Database includes 234 airports including their airline routes, 179 maritime ports and their connections with each ...",
+    "host_name": "zenodo.org",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.researchgate.net/publication/399045183_The_African_Transport_Systems_Database_-_a_geospatial_database_of_multi-modal_connected_networks",
+    "name": "(PDF) The African Transport Systems Database - a geospatial",
+    "snippet": "The African Transport Systems Database includes 234 airports including their airline routes, 179 maritime ports and their connections with each ...",
+    "host_name": "www.researchgate.net",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/nismod/Africa-transport-database/blob/main/.gitignore",
+    "name": "gitignore - nismod/Africa-transport-database - GitHub",
+    "snippet": "Contribute to nismod/Africa-transport-database development by ... Download raw file. Open symbols panel. Edit and raw actions. # Data *.osm.pbf *.gpkg data ...",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.eci.ox.ac.uk/news/eci-researchers-publish-first-continent-wide-database-africas-transport-systems",
+    "name": "ECI researchers publish first continent-wide database of Africa's",
+    "snippet": "The database includes more than one million kilometres of roads, almost 100,000 kilometres of rail lines connecting over 4,400 railway stations ...",
+    "host_name": "www.eci.ox.ac.uk",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/nismod/east-africa-transport",
+    "name": "East Africa Transport Risk Analysis - GitHub",
+    "snippet": "This is a project-specific repository for transport analysis in East Africa, focussing on Kenya, Tanzania, Uganda and Zambia.",
+    "host_name": "github.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/malin84/transportation_networks_of_china",
+    "name": "Datasets that cover the road and rail transportation networks in",
+    "snippet": "This data repository hosts datasets covering China's road and rail transportation networks. covers 1994 to 2024, with roads, highways, railroads, and high- ...",
+    "host_name": "github.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://ppp.worldbank.org/sites/default/files/2022-06/Africas-Transport-Infrastructure-2011.pdf",
+    "name": "[PDF] Africa's Transport Infrastructure - World Bank PPP",
+    "snippet": "The AICD was based on an unprecedented effort to collect detailed economic and technical data on the infrastructure sectors in Africa. ... download customized ...",
+    "host_name": "ppp.worldbank.org",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/MobilityData/awesome-transit",
+    "name": "MobilityData/awesome-transit: Community list of transit APIs, apps",
+    "snippet": "Community list of data standards, APIs, apps, tools, datasets, and research around open source technology of public transit.",
+    "host_name": "github.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The result shows the AfriTrade Agent interface, a voice - powered trade intelligence assistant for ECOWAS cross - border commerce. A currency conversion card is not currently showing on the screen. The exchange rate details are not displayed in the current view; however, there is a “Currency” feature (labeled “Live Exchange Rates”) available as one of the tools (along with “Tariff Lookup” and “Route Finder”) that users can access to get exchange rate information.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781461020,
+  "id": "2026061502165887d35d1d56754081",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "2026061502165887d35d1d56754081",
+  "usage": {
+    "completion_tokens": 99,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 996,
+    "prompt_tokens_details": {
+      "cached_tokens": 6
+    },
+    "total_tokens": 1095
+  }
+}

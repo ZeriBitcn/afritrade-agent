@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot shows the **AfriTrade Agent** interface (a trade intelligence/voice assistant tool for ECOWAS).  \n\n### Is there a tariff result card?  \nYes, there are two key sections displaying tariff-related information:  \n\n1. **“Agent Response” section** (labeled with a “tariff” tag):  \n   - Displays the tariff result: *“The tariff on rice imports from Senegal to Mali is 5% under the ECOWAS Common External Tariff (CET), as rice falls under HS Chapter 10 (Cereals) in Band 5. Rice is classified as a sensitive good under AfCFTA Category B, with a 13-year linear reduction period for Senegal as a Least Developed Country.”*  \n\n2. **“Tariff Information” section**:  \n   - Shows product classification: *“PRODUCT / HS CHAPTER: Cereals (Ch. 10)”* (and a partial “5%” tariff rate is visible, with additional context about goods of primary necessity, raw goods, and capital goods).  \n\n\nThese sections provide the tariff result (5% for rice imports from Senegal to Mali) and supporting details (HS chapter, trade agreement context, etc.).",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781461103,
+  "id": "202606150218193bf48f5f6d8c42b6",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202606150218193bf48f5f6d8c42b6",
+  "usage": {
+    "completion_tokens": 251,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 996,
+    "prompt_tokens_details": {
+      "cached_tokens": 5
+    },
+    "total_tokens": 1247
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot shows the AfriTrade Agent interface (ECOWAS Trade Intelligence • Voice Assistant) with a dark theme. The currency conversion result card is **not displayed**—the visible cards are “Agent Response” (providing tariff info about rice imports) and “Route Information” (showing routes between Senegal and Mali).  \n\nFor the exchange rate: No currency conversion result card is present, so no details about the exchange rate (e.g., currency pair, rate value, timestamp) are visible.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781460890,
+  "id": "20260615021449311b7ad45dc347ff",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260615021449311b7ad45dc347ff",
+  "usage": {
+    "completion_tokens": 105,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1001,
+    "prompt_tokens_details": {
+      "cached_tokens": 5
+    },
+    "total_tokens": 1106
+  }
+}

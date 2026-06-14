@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot displays the AfriTrade Agent interface, a tool for ECOWAS Trade Intelligence with a voice assistant.  \n\n- **Route Finder Result Card**: Yes, there is a “Route Information” section (a route finder result card) showing details for the Lagos → Ouagadougou route.  \n- **Transport Routes Shown**: The primary transport route displayed is the *Lome-West Africa Feeder* (a maritime route).  \n- **Multiple Route Options**: The text “Found 3 route(s) between Lagos and Ouagadougou” indicates there are multiple route options, though only one (Lome-West Africa Feeder) is fully detailed in the visible card.  \n\n\nThe interface includes a microphone input area, a text query box, and quick queries (e.g., “Tariff on rice,” “Lagos to Ouagadougou”), with the route information section providing details about the fastest maritime route (Lome-West Africa Feeder) and confirming multiple route options exist.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781461171,
+  "id": "2026061502192619eab26384594ffe",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "2026061502192619eab26384594ffe",
+  "usage": {
+    "completion_tokens": 207,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1002,
+    "prompt_tokens_details": {
+      "cached_tokens": 6
+    },
+    "total_tokens": 1209
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The screenshot shows the AfriTrade Agent interface (ECOWAS Trade Intelligence • Voice Assistant) with a dark theme. The \"Agent Response\" card is displayed, showing: \"The tool didn’t provide tariff information for rice imports from Senegal to Mali. For tariff details, check Mali’s customs schedule for HS chapter 10 (rice) under ECOWAS CET bands.\" The \"Route Information\" card shows \"Senegal → Mali\" with \"Found 2 route(s) between Senegal and Mali\" and lists the \"Dakar-Bamako Corridor (Trans-Sahel)\" as operational. The tariff result card is **not** displayed (the agent explicitly states no tariff info was provided). Visible details include the voice input area, quick queries (including \"Tariff on rice\"), and route information with distance/duration/cost columns.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1781460871,
+  "id": "202606150214279343cc6c76974ae4",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202606150214279343cc6c76974ae4",
+  "usage": {
+    "completion_tokens": 175,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1000,
+    "prompt_tokens_details": {
+      "cached_tokens": 6
+    },
+    "total_tokens": 1175
+  }
+}

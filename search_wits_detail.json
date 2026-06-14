@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://wits.worldbank.org/tariff/trains/country-byhs6product.aspx?lang=en",
+    "name": "Tariff data by Country | WITS - World Bank",
+    "snippet": "Tariff data from UNCTAD TRAINS by country. Get tariff information like Most Favored Nation (MFN) and Applied Tariff on traded and not-trade products at the HS ...",
+    "host_name": "wits.worldbank.org",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://wits.worldbank.org/videos/bulk-download-unctad-trains.html",
+    "name": "Bulk Download (UNCTAD TRAINS) | WITS | Video Tutorials",
+    "snippet": "The Bulk Download tool lets you download a large amount of data for both Preferential and Most-Favored-Nation (MFN) rates from UNCTADâ€™s TRAINS database at ...",
+    "host_name": "wits.worldbank.org",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://databank.worldbank.org/source/unctad-%5E-trade-analysis-information-system-(trains)",
+    "name": "UNCTAD - Trade Analysis Information System (TRAINS) - DataBank",
+    "snippet": "The United Nations Conference on Trade and Development (UNCTAD) Trade Analysis Information System (TRAINS) contains information on Imports, Tariffs and ...\n... (TRAINS) contains information on Imports, Tariffs and Non-Tariff Measures over 150 countries. For more detailed analysis of Tariff data you can also access ...",
+    "host_name": "databank.worldbank.org",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://unctad.org/topic/trade-analysis/data-statistics-and-trends",
+    "name": "Data, Statistics and Trends in International Trade - UNCTAD",
+    "snippet": "TRAINS contains HS-based tariff data for over 170 countries and for several years. TRAINS is both a data depository and an analytical tool designed for policy- ...",
+    "host_name": "unctad.org",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://wits.worldbank.org/videos/tariff-view-and-export-raw-data.html",
+    "name": "Tariff- View and Export Raw Data | WITS | Video Tutorials - World Bank",
+    "snippet": "This tool is also useful for comparing rates of various trade agreements. Transcript · About . Contact . Usage Conditions . Legal . Data ...",
+    "host_name": "wits.worldbank.org",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://unctadstat.unctad.org/datacentre/reportInfo/US.Tariff",
+    "name": "Import tariff rates on non-agricultural and non-fuel products, annual",
+    "snippet": "This table presents MFN (Most Favoured Nation) and effectively applied import tariff rates for major categories of non-agricultural and non-fuel products.",
+    "host_name": "unctadstat.unctad.org",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://data.worldbank.org/indicator/TM.TAX.MANF.SM.AR.ZS",
+    "name": "Tariff rate, applied, simple mean, manufactured products (%) | Data",
+    "snippet": "Tariff rate, applied, simple mean, manufactured products (%) · Download · DataBank · WDI Tables.",
+    "host_name": "data.worldbank.org",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.unescap.org/sites/default/files/Session5-Data%20Sources%20for%20Trade%20Analysis.pdf",
+    "name": "[PDF] Data Sources for Trade Policy Analysis - ESCAP",
+    "snippet": "WITS provides access to trade and tariffs databases: UNCTAD's TRAINS database. These are based on various data sources: ITC, UNCTAD, World Bank, WTO Page\n(Annual data are available through the World Bank's WITS portal.) b. Base ... ▫ UNCTAD's TRAINS database. ▫ Global Preferential Trade Agreements ...\na. UN Comtrade. ▫ Covers bilateral trade flows at up to the HS 6 level for almost all countries up to 1962. ▫ All trade values are in thousands of current ...",
+    "host_name": "www.unescap.org",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://wits.worldbank.org/videos/tariffprofilesindicators.html",
+    "name": "TRAINS Tariff Profile Indicators | WITS | Video Tutorials - World Bank",
+    "snippet": "TRAINS Tariff Profiles Indicators ... The Tariff Profiles tool lets you quickly access MFN Applied tariff rates and associated import statistics in the UNCTAD ...",
+    "host_name": "wits.worldbank.org",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.wto.org/english/res_e/booksp_e/world_tariff_profiles25_e.pdf",
+    "name": "[PDF] World Tariff Profiles",
+    "snippet": "This annual publication provides comprehensive information on the tariffs and non-tariff measures imposed by over 170 countries and customs territories. Non-WTO ...",
+    "host_name": "www.wto.org",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

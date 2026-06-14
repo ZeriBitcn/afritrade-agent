@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://comtradeplus.un.org/TradeFlow",
+    "name": "Trade Data - UN Comtrade",
+    "snippet": "UN Comtrade regularly updates its data as official information for free to access data previews, download up to 100K records per call,",
+    "host_name": "comtradeplus.un.org",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://wits.worldbank.org",
+    "name": "World Integrated Trade Solution (WITS) | Data on Export, Import",
+    "snippet": "The World Integrated Trade Solution (WITS) software provides access to international merchandise trade , tariff and non-tariff measures (NTM) data.",
+    "host_name": "wits.worldbank.org",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://unctad.org/topic/trade-analysis/data-statistics-and-trends",
+    "name": "Data, Statistics and Trends in International Trade - UNCTAD",
+    "snippet": "We collect, manage and disseminate data, statistics and trends in international trade and trade policy, including customs tariffs, tariff preferences, trade ...",
+    "host_name": "unctad.org",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://wits.worldbank.org/videos/bulk-download-un-comtrade.html",
+    "name": "Bulk Download (UN Comtrade) | WITS | Video Tutorials - World Bank",
+    "snippet": "The Bulk Download tool lets you download a large amount of UN Comtrade data at the leaf level. Transcript",
+    "host_name": "wits.worldbank.org",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://comtrade.un.org",
+    "name": "UN Comtrade Database - the United Nations",
+    "snippet": "The United Nations Comtrade database aggregates detailed global annual and monthly trade statistics by product and trading partner for use by governments, ...",
+    "host_name": "comtrade.un.org",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.unescap.org/sites/default/files/Session5-Data%20Sources%20for%20Trade%20Analysis.pdf",
+    "name": "[PDF] Data Sources for Trade Policy Analysis - ESCAP",
+    "snippet": "UN Comtrade ▪ Covers bilateral trade flows at up to the HS 6 level for almost all countries up to 1962 ▪ All trade values are in thousands of current US dollars",
+    "host_name": "www.unescap.org",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://datacatalog.worldbank.org/search/dataset/0039685/world-integrated-trade-solution-trade-stats",
+    "name": "World Integrated Trade Solution Trade Stats - World Bank Data",
+    "snippet": "WITS Trade Stats is a database created by aggregating data from UN COMTRADE and UNCTAD TRAINS database. It provides information on bilateral trade exports,.",
+    "host_name": "datacatalog.worldbank.org",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://unctad.org/system/files/official-document/ditctab2025d2_en.pdf",
+    "name": "[PDF] Key statistics and trends in international trade 2024 - UNCTAD",
+    "snippet": "The section concludes with a review of the trends in major bilateral trade flows, supported by relevant data. on UN Comtrade data.",
+    "host_name": "unctad.org",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://unctad.org/statistics",
+    "name": "Statistics and data | UN Trade and Development (UNCTAD)",
+    "snippet": "Access all UN Trade and Development (UNCTAD) statistics and databases. Explore and download the latest official statistics, gain deeper insight through graphs ...",
+    "host_name": "unctad.org",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.researchgate.net/publication/323220374_Aid_for_trade_and_Africa's_trade_performance_Evidence_from_bilateral_trade_flows_with_China_and_OECD_countries",
+    "name": "Evidence from bilateral trade flows with China and OECD countries",
+    "snippet": "The present study investigates the nature of the link for the case of African countries using disaggregated AfT data from China and OECD member ...",
+    "host_name": "www.researchgate.net",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]
