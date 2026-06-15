@@ -3,11 +3,34 @@ from embeddings import MiniLMEmbeddingModel
 from qdrant_client import QdrantClient
 import os
 import base64
+import uuid
+import time
+import analytics_tracker
+import re
+import io
+
+# Helper to clean markdown for Text-To-Speech
+def clean_markdown_for_tts(text: str) -> str:
+    # Remove HTML tags if any
+    text = re.sub(r'<[^>]*>', '', text)
+    # Remove markdown link text brackets but keep the text
+    text = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', text)
+    # Remove bold, italics, code blocks formatting
+    text = text.replace('**', '').replace('*', '').replace('`', '').replace('___', '').replace('__', '')
+    # Remove headers formatting
+    text = re.sub(r'#+\s+', '', text)
+    # Remove bullets and list symbols
+    text = re.sub(r'^\s*[-*+]\s+', '', text, flags=re.MULTILINE)
+    text = re.sub(r'^\s*\d+\.\s+', '', text, flags=re.MULTILINE)
+    # Remove excessive white spaces
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
 
 # ──────────────────────────────────────────────
 # Configuration
 # ──────────────────────────────────────────────
 COLLECTION_NAME = "ecowas_tariffs"
+groq_key_input = None
 
 @st.cache_resource
 def load_model():
@@ -29,6 +52,37 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# ──────────────────────────────────────────────
+# Initialize Analytics
+# ──────────────────────────────────────────────
+analytics_tracker.init_db()
+
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+
+utm_source = None
+try:
+    utm_source = st.query_params.get("utm_source") or st.query_params.get("ref")
+except AttributeError:
+    try:
+        params = st.experimental_get_query_params()
+        utm_source = params.get("utm_source", [None])[0] or params.get("ref", [None])[0]
+    except Exception:
+        pass
+
+referrer = "Direct/Organic"
+if utm_source:
+    if "whatsapp" in utm_source.lower() or "telegram" in utm_source.lower():
+        referrer = "WhatsApp/Telegram Outreach"
+    elif "linkedin" in utm_source.lower():
+        referrer = "LinkedIn Campaign"
+    elif "ambassador" in utm_source.lower() or "campus" in utm_source.lower():
+        referrer = "Campus Ambassadors"
+    else:
+        referrer = utm_source
+
+analytics_tracker.log_visitor(st.session_state.session_id, referrer)
 
 # ──────────────────────────────────────────────
 # 2. Premium CSS
@@ -392,6 +446,38 @@ with st.sidebar:
                 <span class="dot-yellow"></span><span>Neo4j: Local graph fallback</span>
             </div>""", unsafe_allow_html=True)
 
+    # ── Groq API Key — auto-load from secrets, fallback to manual input ──
+    st.markdown("---")
+    st.markdown("#### 🎙️ Voice Settings")
+
+    _groq_from_secrets = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
+
+    if _groq_from_secrets:
+        groq_key_input = _groq_from_secrets
+        st.markdown("""
+        <div class="status-indicator">
+            <span class="dot-green"></span><span>Groq Whisper: Auto-configured ✓</span>
+        </div>""", unsafe_allow_html=True)
+        st.caption("Using default Groq API key")
+    else:
+        groq_key_input = st.text_input(
+            "Groq API Key",
+            type="password",
+            placeholder="gsk_...",
+            help="Paste your Groq API key to enable Speech-to-Text transcription.",
+            key="groq_key"
+        )
+        if groq_key_input:
+            st.markdown("""
+            <div class="status-indicator">
+                <span class="dot-green"></span><span>Groq Whisper: Key Provided ✓</span>
+            </div>""", unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="status-indicator">
+                <span class="dot-yellow"></span><span>Voice Input: Disabled (No key)</span>
+            </div>""", unsafe_allow_html=True)
+
     st.markdown("---")
     st.markdown("#### 📘 How to Use")
     st.markdown("""
@@ -434,10 +520,11 @@ st.markdown("""
 # ──────────────────────────────────────────────
 # 5. Tabs
 # ──────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs([
+tab1, tab2, tab3, tab4 = st.tabs([
     "🤖 Agent Reasoning",
     "📋 CET Bands Reference",
-    "💡 Senegal & Regional Rules"
+    "💡 Senegal & Regional Rules",
+    "📊 Analytics Dashboard"
 ])
 
 # ──────────────────────────────────────────────
@@ -448,7 +535,8 @@ with tab1:
     for key, default in [
         ("agent_query", ""),
         ("trigger_agent", False),
-        ("agent_result", None)
+        ("agent_result", None),
+        ("last_processed_audio_hash", None)
     ]:
         if key not in st.session_state:
             st.session_state[key] = default
@@ -472,6 +560,34 @@ with tab1:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # ── Voice Input & Speech-to-Text ──
+    with st.expander("🎙️ Speak Your Query"):
+        audio_value = st.audio_input("Record a voice message")
+        if audio_value:
+            audio_hash = hash(audio_value.getvalue())
+            if st.session_state.get("last_processed_audio_hash") != audio_hash:
+                if not groq_key_input:
+                    st.error("Please configure a Groq API Key in the sidebar to use voice transcription.")
+                else:
+                    with st.spinner("🎙️ Transcribing voice query using Groq Whisper..."):
+                        try:
+                            from groq import Groq
+                            client = Groq(api_key=groq_key_input)
+                            transcription = client.audio.transcriptions.create(
+                                file=("audio.wav", audio_value.getvalue(), "audio/wav"),
+                                model="whisper-large-v3",
+                                prompt="ECOWAS trade, tariffs, routes, Lagos, Accra, Abidjan, Bamako, Dakar, Lome, Cotonou",
+                            )
+                            text = transcription.text.strip()
+                            if text:
+                                st.session_state.agent_query = text
+                                st.session_state.trigger_agent = True
+                                st.session_state.agent_result = None
+                                st.session_state.last_processed_audio_hash = audio_hash
+                                st.rerun()
+                        except Exception as e:
+                            st.error(f"Transcription failed: {e}")
+
     # ── Query Form ──
     with st.form(key="agent_form"):
         query_input = st.text_area(
@@ -488,31 +604,51 @@ with tab1:
         st.session_state.trigger_agent = True
         st.session_state.agent_result = None
 
-    # ── Agent Execution ──
-    if st.session_state.trigger_agent:
-        q = st.session_state.agent_query.strip()
-        if not q:
-            st.warning("Please enter a query or click a suggestion chip.")
-            st.session_state.trigger_agent = False
-        else:
-            # Animated thinking header
-            with st.spinner("🔍 AfriTrade Agent is reasoning through your query…"):
-                try:
-                    from agentic_flow import run_agentic_flow
-                    result = run_agentic_flow(
+        # ── Agent Execution ──
+        if st.session_state.trigger_agent:
+            q = st.session_state.agent_query.strip()
+            if not q:
+                st.warning("Please enter a query or click a suggestion chip.")
+                st.session_state.trigger_agent = False
+            else:
+                # Animated thinking header
+                with st.spinner("🔍 AfriTrade Agent is reasoning through your query…"):
+                    start_time = time.time()
+                    success = True
+                    err_msg = None
+                    try:
+                        from agentic_flow import run_agentic_flow
+                        result = run_agentic_flow(
+                            query=q,
+                            gemini_api_key=gemini_key_input if gemini_key_input else None,
+                            neo4j_config=neo4j_cfg
+                        )
+                        st.session_state.agent_result = result
+                    except Exception as e:
+                        success = False
+                        err_msg = str(e)
+                        st.session_state.agent_result = {
+                            "final_answer": f"Agent execution error: {e}",
+                            "steps": [f"Critical error: {e}"],
+                            "metadata": {}
+                        }
+                    
+                    latency = time.time() - start_time
+                    meta = st.session_state.agent_result.get("metadata", {})
+                    analytics_tracker.log_query(
+                        session_id=st.session_state.session_id,
                         query=q,
-                        gemini_api_key=gemini_key_input if gemini_key_input else None,
-                        neo4j_config=neo4j_cfg
+                        latency=latency,
+                        route_requested=meta.get("route_requested", False),
+                        tariff_requested=meta.get("tariff_requested", False),
+                        start_hub=meta.get("start_hub", ""),
+                        end_hub=meta.get("end_hub", ""),
+                        commodity=meta.get("commodity", ""),
+                        success=success,
+                        error_message=err_msg
                     )
-                    st.session_state.agent_result = result
-                except Exception as e:
-                    st.session_state.agent_result = {
-                        "final_answer": f"Agent execution error: {e}",
-                        "steps": [f"Critical error: {e}"],
-                        "metadata": {}
-                    }
 
-            st.session_state.trigger_agent = False
+                st.session_state.trigger_agent = False
 
     # ── Display Agent Results ──
     if st.session_state.agent_result:
@@ -553,6 +689,27 @@ with tab1:
         """, unsafe_allow_html=True)
         st.markdown(answer)
         st.markdown("</div>", unsafe_allow_html=True)
+
+        # ── Text-to-Speech Playback ──
+        st.markdown("<br>", unsafe_allow_html=True)
+        with st.expander("🔊 Listen to Response", expanded=False):
+            if st.button("Generate & Play Audio", key="play_tts_button", use_container_width=True):
+                with st.spinner("🎙️ Synthesizing speech..."):
+                    try:
+                        from gtts import gTTS
+                        import io
+                        
+                        clean_text = clean_markdown_for_tts(answer)
+                        tts = gTTS(text=clean_text, lang='en', slow=False)
+                        
+                        fp = io.BytesIO()
+                        tts.write_to_fp(fp)
+                        fp.seek(0)
+                        
+                        st.audio(fp, format="audio/mp3", autoplay=True)
+                        st.success("Audio synthesized successfully! Click play on the audio player if it did not auto-start.")
+                    except Exception as tts_err:
+                        st.error(f"Failed to generate audio: {tts_err}")
 
         # ── Metadata Expander ──
         with st.expander("🔍 Show Raw Tool Outputs"):
@@ -647,3 +804,181 @@ The **ETLS** is the primary tool for establishing a Free Trade Area:
         """)
 
     st.warning("⚠️ **Notice to Traders:** Although ETLS promotes 0% duty for local goods, national authorities still apply internal taxes (VAT, statistical fees) and border controls. Always verify with official Customs authorities before departure.")
+
+# ──────────────────────────────────────────────
+# TAB 4 — Analytics Dashboard
+# ──────────────────────────────────────────────
+with tab4:
+    st.markdown("## 📊 Public Analytics Dashboard")
+    st.markdown("Real-time usage metrics and organic distribution results for the AfriTrade Agent.")
+    
+    # Fetch metrics from database
+    metrics = analytics_tracker.get_metrics()
+    
+    # Custom CSS for metrics cards
+    st.markdown("""
+    <style>
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+    .metric-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.85));
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
+    }
+    .metric-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(192, 132, 252, 0.45);
+        box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+    }
+    .metric-val {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #60a5fa, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 4px;
+    }
+    .metric-lbl {
+        font-family: 'Inter', sans-serif;
+        color: #94a3b8;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Metrics cards row
+    st.markdown(f"""
+    <div class="metric-grid">
+        <div class="metric-card">
+            <div class="metric-val">{metrics["total_visitors"]}</div>
+            <div class="metric-lbl">👥 Unique Visitors</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val">{metrics["total_queries"]}</div>
+            <div class="metric-lbl">⚡ Queries Processed</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val">{metrics["avg_latency"]}s</div>
+            <div class="metric-lbl">⏱️ Avg Latency</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val">{metrics["success_rate"]}%</div>
+            <div class="metric-lbl">✅ Success Rate</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Visualizations row
+    col_vis1, col_vis2 = st.columns(2)
+    
+    with col_vis1:
+        st.markdown("### 🛣️ Top Queried Routes")
+        if metrics["top_routes"]:
+            import pandas as pd
+            import plotly.express as px
+            
+            df_routes = pd.DataFrame(metrics["top_routes"])
+            fig = px.bar(
+                df_routes, 
+                x="count", 
+                y="route", 
+                orientation="h",
+                labels={"count": "Number of Queries", "route": "Route"},
+                color="count",
+                color_continuous_scale=["#60a5fa", "#c084fc"]
+            )
+            fig.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#cbd5e1',
+                xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
+                yaxis=dict(showgrid=False, autorange="reversed"),
+                coloraxis_showscale=False,
+                margin=dict(l=10, r=10, t=10, b=10),
+                height=260
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No query route logs recorded yet.")
+            
+    with col_vis2:
+        st.markdown("### 📢 User Acquisition by Referral Channel")
+        if metrics["traffic_sources"]:
+            import pandas as pd
+            import plotly.express as px
+            
+            df_src = pd.DataFrame([
+                {"Source": k, "Visitors": v} for k, v in metrics["traffic_sources"].items()
+            ])
+            fig_pie = px.pie(
+                df_src, 
+                values="Visitors", 
+                names="Source",
+                color_discrete_sequence=["#60a5fa", "#c084fc", "#34d399", "#f59e0b"]
+            )
+            fig_pie.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#cbd5e1',
+                margin=dict(l=10, r=10, t=10, b=10),
+                height=260
+            )
+            st.plotly_chart(fig_pie, use_container_width=True)
+        else:
+            st.info("No traffic source logs recorded yet.")
+            
+    # Feature usage and recent logs row
+    col_feat, col_log = st.columns([1, 2])
+    
+    with col_feat:
+        st.markdown("### ⚙️ Feature Usage Breakdown")
+        feat_data = metrics["feature_usage"]
+        if sum(feat_data.values()) > 0:
+            import pandas as pd
+            import plotly.express as px
+            
+            df_feat = pd.DataFrame([
+                {"Feature": k, "Queries": v} for k, v in feat_data.items()
+            ])
+            fig_feat = px.bar(
+                df_feat,
+                x="Feature",
+                y="Queries",
+                color="Feature",
+                color_discrete_map={"Tariff Lookup": "#34d399", "Route Finder": "#fb923c"}
+            )
+            fig_feat.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#cbd5e1',
+                yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
+                xaxis=dict(showgrid=False),
+                showlegend=False,
+                margin=dict(l=10, r=10, t=10, b=10),
+                height=250
+            )
+            st.plotly_chart(fig_feat, use_container_width=True)
+        else:
+            st.info("No feature usage logs recorded yet.")
+            
+    with col_log:
+        st.markdown("### 🕒 Recent User Queries")
+        if metrics["recent_queries"]:
+            import pandas as pd
+            df_q = pd.DataFrame(metrics["recent_queries"])
+            df_q.columns = ["Query", "Timestamp", "Latency", "Status", "Source Channel"]
+            st.dataframe(df_q, use_container_width=True, hide_index=True)
+        else:
+            st.info("No queries logged yet.")

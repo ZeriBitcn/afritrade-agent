@@ -8,3 +8,6 @@ pandas
 langgraph
 langchain-core
 neo4j
+groq
+gtts
+plotly
