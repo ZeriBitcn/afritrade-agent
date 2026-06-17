@@ -2,17 +2,20 @@ from typing import TypedDict, List, Dict, Any, Optional
 import os
 import re
 import json
+import time
 import httpx
 from langgraph.graph import StateGraph, END
 
 # Import tools
-from tools import tariff_search_tool, route_finder_tool
+from tools import tariff_search_tool, route_finder_tool, graded_tariff_search_tool
+from observability import AgentLogger
 
 # Define State Schema
 class AgentState(TypedDict):
     query: str
     gemini_api_key: Optional[str]
     neo4j_config: Optional[dict]
+    session_id: Optional[str]
     
     # Router extracted parameters
     route_requested: bool
@@ -23,7 +26,11 @@ class AgentState(TypedDict):
     
     # Tool outputs
     tariff_results: List[dict]
+    tariff_grades: List[dict]  # Multi-hop RAG graded results
     route_results: dict
+    
+    # Observability
+    node_timings: dict  # Per-node latency tracking {node_name: ms}
     
     # Reasoning execution logs
     steps: List[str]
@@ -99,6 +106,10 @@ def call_gemini(prompt: str, api_key: str, system_instruction: str = None, max_r
 
 # 1. ROUTER NODE
 def router_node(state: AgentState) -> dict:
+    logger = AgentLogger(session_id=state.get("session_id", "unknown"))
+    logger.log_node_entry("router", dict(state))
+    node_start = time.time()
+    
     query = state["query"]
     api_key = state.get("gemini_api_key")
     
@@ -162,7 +173,11 @@ def router_node(state: AgentState) -> dict:
         )
         prompt = f"Query: {query}"
         
+        llm_start = time.time()
         response = call_gemini(prompt, api_key, system_instruction)
+        llm_latency = round((time.time() - llm_start) * 1000, 1)
+        logger.log_llm_call(_GEMINI_MODEL, len(prompt) // 4, len(response) // 4, llm_latency, "ok")
+        
         try:
             # Robustly extract JSON block if conversational text wraps it
             json_match = re.search(r'\{.*\}', response, re.DOTALL)
@@ -179,6 +194,7 @@ def router_node(state: AgentState) -> dict:
             commodity = parsed.get("commodity", commodity) or rule_commodity
             steps.append("Router Agent completed analysis using Gemini LLM parser.")
         except Exception as err:
+            logger.log_error("router", err)
             steps.append(f"Router Agent LLM parse failed ({err}). Falling back to pattern-based routing.")
             start_hub = rule_start
             end_hub = rule_end
@@ -199,45 +215,96 @@ def router_node(state: AgentState) -> dict:
         f"Start: {start_hub}, End: {end_hub}, Commodity: {commodity}"
     )
     
+    duration_ms = round((time.time() - node_start) * 1000, 1)
+    logger.log_node_exit("router", duration_ms, f"tariff={tariff_requested}, route={route_requested}")
+    
+    node_timings = dict(state.get("node_timings", {}))
+    node_timings["router"] = duration_ms
+    
     return {
         "route_requested": route_requested,
         "tariff_requested": tariff_requested,
         "start_hub": start_hub,
         "end_hub": end_hub,
         "commodity": commodity,
-        "steps": steps
+        "steps": steps,
+        "node_timings": node_timings
     }
 
-# 2. TARIFF TOOL NODE
+# 2. TARIFF TOOL NODE (Multi-hop RAG with grading)
 def tariff_tool_node(state: AgentState) -> dict:
+    logger = AgentLogger(session_id=state.get("session_id", "unknown"))
+    logger.log_node_entry("tariff_tool", dict(state))
+    node_start = time.time()
+    
     steps = list(state.get("steps", []))
     
     if not state.get("tariff_requested"):
-        return {"tariff_results": [], "steps": steps}
+        duration_ms = round((time.time() - node_start) * 1000, 1)
+        logger.log_node_exit("tariff_tool", duration_ms, "skipped — not requested")
+        return {"tariff_results": [], "tariff_grades": [], "steps": steps}
         
-    steps.append(f"Tariff Tool active. Querying Qdrant database for commodity details: '{state.get('commodity')}'...")
+    commodity = state.get('commodity', 'goods')
+    steps.append(f"Tariff Tool active. Querying Qdrant database for commodity details: '{commodity}'...")
     
     # Search query formatting
-    search_query = f"{state.get('commodity')} tariff rate ECOWAS CET rules import duty"
-    results = tariff_search_tool(search_query)
+    search_query = f"{commodity} tariff rate ECOWAS CET rules import duty"
+    api_key = state.get("gemini_api_key")
     
-    if "error" in results[0] if results else False:
-        steps.append(f"Tariff Tool encounter error: {results[0]['error']}")
-        tariff_results = []
+    # Use multi-hop graded search when API key is available
+    if api_key:
+        steps.append("Using multi-hop RAG with LLM-based document grading...")
+        try:
+            graded_result = graded_tariff_search_tool(search_query, api_key, logger)
+            tariff_results = graded_result["graded_results"]
+            tariff_grades = graded_result["graded_results"]  # Same list, has grade field
+            steps.extend(graded_result["steps"])
+            steps.append(
+                f"Multi-hop RAG complete: {graded_result['hops_performed']} hop(s), "
+                f"{graded_result['total_passed']}/{graded_result['total_retrieved']} chunks passed grading."
+            )
+        except Exception as e:
+            logger.log_error("tariff_tool", e)
+            steps.append(f"Graded search failed ({e}). Falling back to single-pass retrieval.")
+            tariff_results = tariff_search_tool(search_query)
+            tariff_grades = []
+            if tariff_results and "error" in tariff_results[0]:
+                steps.append(f"Tariff Tool error: {tariff_results[0]['error']}")
+                tariff_results = []
     else:
-        tariff_results = results
-        steps.append(f"Tariff Tool successfully retrieved {len(results)} relevant documents from Qdrant.")
+        # Fallback: single-pass retrieval (no API key for grading)
+        tariff_results = tariff_search_tool(search_query)
+        tariff_grades = []
+        if tariff_results and "error" in tariff_results[0]:
+            steps.append(f"Tariff Tool error: {tariff_results[0]['error']}")
+            tariff_results = []
+        else:
+            steps.append(f"Tariff Tool retrieved {len(tariff_results)} documents (ungraded — no API key).")
+    
+    duration_ms = round((time.time() - node_start) * 1000, 1)
+    logger.log_node_exit("tariff_tool", duration_ms, f"{len(tariff_results)} chunks")
+    
+    node_timings = dict(state.get("node_timings", {}))
+    node_timings["tariff_tool"] = duration_ms
         
     return {
         "tariff_results": tariff_results,
-        "steps": steps
+        "tariff_grades": tariff_grades,
+        "steps": steps,
+        "node_timings": node_timings
     }
 
 # 3. ROUTE TOOL NODE
 def route_tool_node(state: AgentState) -> dict:
+    logger = AgentLogger(session_id=state.get("session_id", "unknown"))
+    logger.log_node_entry("route_tool", dict(state))
+    node_start = time.time()
+    
     steps = list(state.get("steps", []))
     
     if not state.get("route_requested"):
+        duration_ms = round((time.time() - node_start) * 1000, 1)
+        logger.log_node_exit("route_tool", duration_ms, "skipped — not requested")
         return {"route_results": {}, "steps": steps}
         
     query_lower = state["query"].lower()
@@ -348,13 +415,25 @@ def route_tool_node(state: AgentState) -> dict:
         "total_checkpoints": legacy_details.get("total_checkpoints", 0)
     }
     steps.append("City route details retrieved successfully.")
+    
+    duration_ms = round((time.time() - node_start) * 1000, 1)
+    logger.log_node_exit("route_tool", duration_ms, f"{start} → {end}")
+    
+    node_timings = dict(state.get("node_timings", {}))
+    node_timings["route_tool"] = duration_ms
+    
     return {
         "route_results": results,
-        "steps": steps
+        "steps": steps,
+        "node_timings": node_timings
     }
 
 # 4. ANSWER SYNTHESIS NODE
 def answer_node(state: AgentState) -> dict:
+    logger = AgentLogger(session_id=state.get("session_id", "unknown"))
+    logger.log_node_entry("answer_generator", dict(state))
+    node_start = time.time()
+    
     steps = list(state.get("steps", []))
     steps.append("Answer Agent active. Synthesizing final answer...")
     
@@ -368,10 +447,11 @@ def answer_node(state: AgentState) -> dict:
     # Compile factual context from tools
     tariff_context = ""
     if state.get("tariff_results"):
-        tariff_context = "### Tariff Information (Qdrant Vector Database):\n"
+        tariff_context = "### Tariff Information (Qdrant Vector Database — Multi-hop RAG):\n"
         for i, res in enumerate(state["tariff_results"], 1):
+            grade_str = f", Grade: {res['grade']}/10" if "grade" in res else ""
             tariff_context += (
-                f"{i}. [Score: {res['score']:.2f}] (Source: {res['source']}, Page: {res['page']}):\n"
+                f"{i}. [Score: {res['score']:.2f}{grade_str}] (Source: {res['source']}, Page: {res['page']}):\n"
                 f"   \"{res['text']}\"\n\n"
             )
     else:
@@ -544,9 +624,16 @@ def answer_node(state: AgentState) -> dict:
             final_answer = "".join(report_parts)
         steps.append("Answer Agent synthesized response using local rules and template fallback.")
     
+    duration_ms = round((time.time() - node_start) * 1000, 1)
+    logger.log_node_exit("answer_generator", duration_ms, f"{len(final_answer)} chars")
+    
+    node_timings = dict(state.get("node_timings", {}))
+    node_timings["answer_generator"] = duration_ms
+    
     return {
         "final_answer": final_answer,
-        "steps": steps
+        "steps": steps,
+        "node_timings": node_timings
     }
 
 # Build LangGraph workflow
@@ -572,7 +659,7 @@ def build_agent_graph():
     return builder.compile()
 
 # Entry function to run reasoning loop
-def run_agentic_flow(query: str, gemini_api_key: str = None, neo4j_config: dict = None) -> dict:
+def run_agentic_flow(query: str, gemini_api_key: str = None, neo4j_config: dict = None, session_id: str = None) -> dict:
     graph = build_agent_graph()
     
     # Initialize state
@@ -580,13 +667,16 @@ def run_agentic_flow(query: str, gemini_api_key: str = None, neo4j_config: dict 
         "query": query,
         "gemini_api_key": gemini_api_key,
         "neo4j_config": neo4j_config,
+        "session_id": session_id or "unknown",
         "route_requested": False,
         "tariff_requested": False,
         "start_hub": None,
         "end_hub": None,
         "commodity": None,
         "tariff_results": [],
+        "tariff_grades": [],
         "route_results": {},
+        "node_timings": {},
         "steps": [],
         "final_answer": ""
     }
@@ -602,6 +692,8 @@ def run_agentic_flow(query: str, gemini_api_key: str = None, neo4j_config: dict 
             "route_requested": result.get("route_requested"),
             "tariff_requested": result.get("tariff_requested"),
             "tariff_results": result.get("tariff_results"),
-            "route_results": result.get("route_results")
+            "tariff_grades": result.get("tariff_grades"),
+            "route_results": result.get("route_results"),
+            "node_timings": result.get("node_timings", {})
         }
     }

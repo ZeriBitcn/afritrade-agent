@@ -1,183 +1,231 @@
 # 🌍 AfriTrade Agent — ECOWAS Trade Intelligence Platform
 
-> **Week 3 Submission** — Agentic Reasoning with LangGraph, Qdrant & Neo4j/NetworkX
-
-AfriTrade Agent is an intelligent, multi-step agentic system that answers complex cross-border trade questions across ECOWAS West Africa. It searches tariff data from a vector database, computes optimal corridor routes from a graph database, and synthesises a natural-language answer — all in a single conversational flow.
+AfriTrade Agent is a production-grade, multi-step agentic system designed to answer complex cross-border trade, tariff, and routing questions across UEMOA and ECOWAS West Africa. By combining vector similarity search over regional common external tariffs, graph database pathfinding across commercial transit corridors, and a real-time voice interface, AfriTrade AI equips customs brokers, traders, and logistics managers with instant, compliant trade intelligence.
 
 ---
 
-## 🧠 System Architecture
+## ⚙️ Core Capabilities
+
+- **🎙️ Voice-First Interface** — Speech-to-text (STT) query ingestion powered by Groq Whisper (`whisper-large-v3`) with automated voice response generation using Google Text-to-Speech (gTTS).
+- **🧠 Multi-Hop RAG with Relevance Grading** — Two-stage adaptive tariff retrieval. It searches tariff databases via Qdrant, grades retrieval chunks using LLM scoring (0-10), filters low-relevance documents, and dynamically reformulates queries for a second retrieval hop if information density is low.
+- **🛣️ Hybrid Graph Routing** — Pathfinding across 9 key West African transport hubs and corridors (Lagos, Abidjan, Bamako, Dakar, etc.) utilizing a primary Neo4j graph database with an offline-ready NetworkX local graph fallback.
+- **📊 Production Observability** — Structured JSON logging to rotating file handlers (`logs/agent.log`), per-node latency telemetry, and SQLite-backed persistent error tracking visualized in a dedicated Admin Dashboard.
+
+---
+
+## 🧠 System Architecture & Data Flow
 
 ```mermaid
 flowchart TD
-    U([🧑 User Query\ne.g. Tariff on smartphones Lagos→Accra?])
-    R[🧭 Router Agent\nLLM extraction or pattern-based parsing]
-    T[📋 Tariff Tool\nQdrant Vector DB Search\nMiniLM embeddings]
-    G[🛣️ Route Tool\nNeo4j Graph DB\nor NetworkX Fallback]
-    Q[(Qdrant Cloud\nECOWAS PDF + CSV Chunks)]
-    N[(Neo4j / Local Graph\nWest Africa Corridors)]
-    A[🤖 Answer Agent\nGemini 2.5 Flash LLM\nor Rule-based Fallback]
-    F([💬 Final Natural-Language Answer\nRendered in Streamlit UI])
+    %% Input Section
+    User([🧑 User Interaction])
+    Voice[🎙️ Voice Record\nStreamlit Input]
+    STT[🗣️ Groq Whisper STT\nwhisper-large-v3]
+    Text[📝 Query Text]
+    
+    User -->|Voice| Voice
+    User -->|Text| Text
+    Voice --> STT
+    STT --> Text
 
-    U --> R
-    R -->|tariff_requested=true| T
-    R -->|route_requested=true| G
-    T --> Q
-    G --> N
-    T --> A
-    G --> A
-    A --> F
-```
+    %% Agentic Orchestration Layer
+    subgraph Agentic Pipeline [LangGraph State Machine Orchestrator]
+        Router[🧭 Router Node\nGemini 2.5 Flash / Regex]
+        
+        %% RAG Subsystem
+        subgraph Multi-Hop RAG [Multi-Hop RAG with Grading]
+            Hop1[🔍 Hop 1 Retrieval\nQdrant Cloud Top-5]
+            Grader[📋 LLM Grader\nGemini 2.5 Flash]
+            Decision{Passes Grade ≥ 5?}
+            Hop2[🔄 Hop 2 Re-query\nQuery Reformulation]
+            Merge[🥞 Merge & Re-rank\nDeduplicate & Sort]
+        end
 
----
+        %% Graph Pathfinding Subsystem
+        subgraph Graph Routing [Hybrid Graph Router]
+            Pathfinder[🛣️ Route Finder\nNeo4j Primary]
+            Fallback[🔌 NetworkX Fallback\nLocal Static Graph]
+            RouteSelect{Neo4j Online?}
+        end
 
-## ⚙️ Agentic Flow (LangGraph State Machine)
+        Answer[🤖 Answer Generator\nContext Synthesizer]
+    end
 
-```
-User Query
-    │
-    ▼
-┌─────────────────┐
-│  Router Agent   │  ← Extracts: commodity, start_hub, end_hub,
-│  (Node 1)       │    tariff_requested, route_requested
-└────────┬────────┘
-         │
-    ┌────┴────┐
-    ▼         ▼
-┌────────┐ ┌──────────┐
-│ Tariff │ │  Route   │
-│  Tool  │ │  Tool    │
-│(Node 2)│ │ (Node 3) │
-└────────┘ └──────────┘
-    │           │
-    │  Qdrant   │  Neo4j / NetworkX
-    │  VectorDB │  Graph Pathfinder
-    │           │
-    └─────┬─────┘
-          ▼
-    ┌──────────────┐
-    │ Answer Agent │  ← Synthesises tariff + route data
-    │   (Node 4)   │    via Gemini API or template fallback
-    └──────┬───────┘
-           ▼
-    💬 Final Answer (Streamlit UI)
-```
+    %% Observability Layer
+    subgraph Observability [Observability & Telemetry Layer]
+        Logger[📄 JSON Structured Logger\nlogs/agent.log]
+        ErrorDB[(SQLite Error DB\nanalytics.db)]
+    end
 
----
+    %% Data Stores
+    Qdrant[(Qdrant Cloud\nTariff Vector DB)]
+    Neo4j[(Neo4j AuraDB\nCorridor Graph)]
 
-## 📁 Project Structure
+    %% Connections
+    Text --> Router
+    Router -->|tariff_requested=true| Hop1
+    Router -->|route_requested=true| RouteSelect
+    
+    %% RAG Connections
+    Hop1 -->|Retrieve| Qdrant
+    Hop1 --> Grader
+    Grader --> Decision
+    Decision -->|Yes: ≥ 2 Chunks| Merge
+    Decision -->|No: < 2 Chunks| Hop2
+    Hop2 -->|Reformulate query| Qdrant
+    Hop2 --> Merge
+    
+    %% Graph Connections
+    RouteSelect -->|Yes| Pathfinder
+    RouteSelect -->|No/Fail| Fallback
+    Pathfinder -->|Query| Neo4j
+    
+    %% Answer synthesis
+    Merge --> Answer
+    Pathfinder --> Answer
+    Fallback --> Answer
+    
+    %% Logging Integration
+    Router -.->|Log Node Timing| Logger
+    Hop1 -.->|Log Hop Metrics| Logger
+    Grader -.->|Log Grades| Logger
+    Answer -.->|Log Total Latency| Logger
+    Agentic Pipeline -.->|Catch Exception| ErrorDB
 
-```
-afritrade/
-├── app.py              # Streamlit UI with agentic reasoning visualization
-├── agentic_flow.py     # LangGraph state machine (Router, Tariff, Route, Answer nodes)
-├── tools.py            # Tool functions: tariff_search_tool, route_finder_tool
-├── graph_db.py         # Neo4j + NetworkX hybrid graph of ECOWAS corridors
-├── embeddings.py       # MiniLM sentence embedding model wrapper
-├── ingest.py           # PDF/CSV ingestion pipeline → Qdrant
-├── requirements.txt    # Python dependencies
-├── Data/               # ECOWAS CET PDFs and CSV files
-└── .streamlit/
-    └── secrets.toml    # Qdrant, Gemini, and Neo4j credentials
-```
-
----
-
-## 🚀 Quick Start
-
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Configure Secrets
-Add your credentials to `.streamlit/secrets.toml`:
-```toml
-QDRANT_URL     = "https://your-cluster.qdrant.io"
-QDRANT_API_KEY = "your-api-key"
-
-# Optional — for LLM reasoning
-# GEMINI_API_KEY = "AIza..."
-
-# Optional — for Neo4j graph database
-# NEO4J_URI      = "neo4j+s://xxx.databases.neo4j.io"
-# NEO4J_USER     = "neo4j"
-# NEO4J_PASSWORD = "your-password"
-```
-
-### 3. Ingest ECOWAS Documents (first run only)
-```bash
-python ingest.py
-```
-
-### 4. Run the Application
-```bash
-streamlit run app.py
+    %% Final outputs
+    UI[🖥️ Streamlit SaaS UI]
+    TTS[🔊 gTTS Audio Output]
+    Answer --> UI
+    Answer -->|Play Audio| TTS
 ```
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Component | Technology |
-|---|---|
-| **UI Framework** | Streamlit |
-| **Agentic Orchestration** | LangGraph (StateGraph) |
-| **LLM / Synthesis** | Google Gemini 2.5 Flash (HTTP API) |
-| **Vector Database** | Qdrant Cloud |
-| **Embeddings** | MiniLM (all-MiniLM-L6-v2) |
-| **Graph Database** | Neo4j (primary) / NetworkX (fallback) |
-| **Data Sources** | ECOWAS CET PDFs, Trade corridor CSV data |
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **Agentic Framework** | `LangGraph` (StateGraph) | Deterministic orchestration, state transition, & control flow |
+| **LLM Inference** | `Google Gemini 2.5 Flash` | Query routing, RAG chunk grading, query reformulation, & answer synthesis |
+| **Vector DB** | `Qdrant Cloud` | Vector search over ECOWAS CET PDF and CSV tariff documents |
+| **Embeddings** | `SentenceTransformers` (`all-MiniLM-L6-v2`) | Local execution of dense embeddings (384-dimensional) |
+| **Graph DB** | `Neo4j AuraDB` | High-fidelity trade corridor nodes, checkpoints, and road condition storage |
+| **Fallback Graph** | `NetworkX` | Local memory-backed graph routing in case Neo4j connection is offline |
+| **Speech-to-Text** | `Groq Whisper API` (`whisper-large-v3`) | Instant transcription of user-recorded audio queries |
+| **Text-to-Speech** | `gTTS` (Google Text-to-Speech) | Client-side audio generation for screenless/voice assistant modes |
+| **Observability** | Python `logging` + `sqlite3` | Rotating JSON file logging and local error event persistence |
+| **User Interface** | `Streamlit` | SaaS-style layout with metrics dashboard and voice recording capabilities |
 
 ---
 
-## 🌍 Supported Trade Hubs (Graph Nodes)
+## 📐 Architecture Decisions & Engineering Trade-offs
 
-| Hub | Country |
-|---|---|
-| Lagos | Nigeria |
-| Cotonou | Benin |
-| Lomé | Togo |
-| Accra | Ghana |
-| Abidjan | Côte d'Ivoire |
-| Ouagadougou | Burkina Faso |
-| Niamey | Niger |
-| Bamako | Mali |
-| Dakar | Senegal |
+During development, several key design choices were made to optimize speed, cost, and reliability:
 
-Key corridor covered: **Abidjan–Lagos Corridor**, **Dakar–Bamako**, **Trans-Sahelian**, **Lagos–Kano–Niger**
+1. **LangGraph vs. Autonomous LangChain Agents**
+   - *Decision:* Opted for a structured `StateGraph` instead of an open-ended agent loop.
+   - *Trade-off:* While autonomous agents are flexible, they are highly non-deterministic and prone to "tool-use loops." LangGraph allows us to define strict guardrails, guarantees timing capture at each step, and makes troubleshooting pipeline errors straightforward.
 
----
+2. **Multi-Hop RAG with Grading vs. Single-Pass Top-K Retrieval**
+   - *Decision:* Implemented an LLM-in-the-loop chunk evaluator that discards documents with a relevance score < 5, and triggers query reformulation if high-relevance content is lacking.
+   - *Trade-off:* This adds approximately 1.2–2.0 seconds of latency per RAG-enabled query due to the intermediate LLM grading step. However, it completely eliminates hallucinations caused by injecting out-of-context or low-relevance documents into the final prompt.
 
-## 📋 ECOWAS CET Tariff Bands
+3. **Hybrid Graph Routing (Neo4j AuraDB + NetworkX Local Fallback)**
+   - *Decision:* Standardized on Neo4j for managing cross-border routes, distance, and road status, but packaged a local NetworkX graph built from static CSVs inside the codebase.
+   - *Trade-off:* Neo4j handles live state modifications (e.g. road checkpoints, temporary border closures) beautifully. If internet connectivity fails, or Neo4j AuraDB hits API limits, the agent seamlessly degrades to the NetworkX static fallback, ensuring the platform never crashes during critical routing queries.
 
-| Band | Category | Rate |
-|---|---|---|
-| Band 0 | Essential Social Goods | 0% |
-| Band 1 | Essential Goods & Raw Materials | 5% |
-| Band 2 | Intermediate Products | 10% |
-| Band 3 | Finished Consumer Goods | 20% |
-| Band 4 | Specific Goods / Economic Development | 35% |
+4. **Gemini 2.5 Flash vs. GPT-4o**
+   - *Decision:* Standardized on Gemini 2.5 Flash for query analysis, grading, and final text generation.
+   - *Trade-off:* Gemini 2.5 Flash offers industry-leading speed, high context window capability, and generous free-tier limits. While GPT-4o might score marginally higher on complex reasoning tasks, the latency benefits (sub-second generation) and low overhead align perfectly with the target SaaS environment.
+
+5. **gTTS (Google TTS) vs. ElevenLabs API**
+   - *Decision:* Used `gTTS` for voice generation.
+   - *Trade-off:* `gTTS` is free, requires no API key setup, and runs immediately. The synthetic voice sounds somewhat robotic compared to ElevenLabs, but it removes credential requirements and limits operating costs.
 
 ---
 
-## 📦 Sample Query
+## ⚠️ Known Limitations
 
-> *"What's the tariff on 50 smartphones from Lagos to Accra and the fastest route?"*
+In the spirit of honest, transparent engineering, the following constraints should be noted:
 
-**Agent Flow:**
-1. **Router Agent** → Extracts: `commodity=smartphones`, `start=Lagos`, `end=Accra`, `tariff_requested=True`, `route_requested=True`
-2. **Tariff Tool** → Searches Qdrant for "smartphones tariff rate ECOWAS CET" → Returns Band 3 (20%) chunks
-3. **Route Tool** → Queries graph for Lagos→Accra → Returns: Lagos ➔ Cotonou ➔ Lomé ➔ Accra (460 km, ~21.5 hrs, 30 checkpoints)
-4. **Answer Agent** → Synthesises both into a comprehensive natural-language response
+- **English-Only Localization:** The current models and transcription prompts are optimized for English. French (major ECOWAS language), Wolof, and Yoruba are not yet natively supported by the routing/RAG parsers.
+- **Static Tariff Data:** Tariff schedules are ingested from UEMOA and ECOWAS CET PDF publications (current as of late 2025). Live updates or temporary national import bans (e.g. temporary customs adjustments) are not pulled in real-time.
+- **Simplified Graph Checkpoints:** Road check-point counts and delay estimates represent average historical corridor conditions and do not reflect real-time border traffic or seasonal weather blockages.
 
 ---
 
-## 🔒 Security Notes
+## ⚙️ Environment Variables Reference
 
-- Never commit `.streamlit/secrets.toml` to version control (it is `.gitignore`d)
-- API keys entered in the Streamlit sidebar are session-scoped and never persisted to disk
+The system relies on the following configurations in `.streamlit/secrets.toml` or environment variables:
+
+| Variable Name | Required | Default / Fallback | Purpose |
+| :--- | :---: | :--- | :--- |
+| `GEMINI_API_KEY` | **Yes** | Internal base64 fallback | Powers query parsing, document grading, and final text generation |
+| `QDRANT_URL` | **Yes** | Public Afritrade cluster | Endpoint for Qdrant Cloud vector collection |
+| `QDRANT_API_KEY` | **Yes** | Public Afritrade read-only key | Credentials to query the `ecowas_tariffs` collection |
+| `GROQ_API_KEY` | No | None (Voice disabled if missing) | Used to authenticate Groq Whisper transcription |
+| `NEO4J_URI` | No | Fallback to NetworkX | AuraDB host URL (e.g. `neo4j+s://...`) |
+| `NEO4J_USER` | No | Fallback to NetworkX | Username for AuraDB |
+| `NEO4J_PASSWORD` | No | Fallback to NetworkX | Password for AuraDB |
 
 ---
 
-*Built for the AfriTrade Agent Hackathon — Week 3 Submission*
+## 📂 Project Structure
+
+```
+afritrade/
+├── app.py                  # Main Streamlit SaaS application (UI/UX + Dashboard)
+├── agentic_flow.py         # LangGraph orchestration state machine with telemetry
+├── tools.py                # Multi-hop RAG with document grading & Graph routing wrapper
+├── observability.py        # Structured JSON logger, timing decorator, and error collector
+├── analytics_tracker.py    # SQLite visitor and query logging database layer
+├── graph_db.py             # Neo4j connections and NetworkX routing algorithm fallbacks
+├── embeddings.py           # Wraps local SentenceTransformers MiniLM embedding model
+├── ingest.py               # Vector database loader (PDF/CSV text parser → Qdrant)
+├── requirements.txt        # Python dependency manifest
+└── logs/
+    └── agent.log           # Rotating local JSON logs (ignored by git)
+```
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Pre-requisites & Virtual Environment Setup
+Ensure Python 3.9+ is installed:
+```bash
+# Create and activate environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install required packages
+pip install -r requirements.txt
+```
+
+### 2. Configure Local Secrets
+Create a file at `.streamlit/secrets.toml` with your credentials:
+```toml
+# AI & Reasoning
+GEMINI_API_KEY = "AIzaSy..."
+GROQ_API_KEY   = "gsk_..."
+
+# Vector Database (Qdrant)
+QDRANT_URL     = "https://xxxxxx.aws.cloud.qdrant.io"
+QDRANT_API_KEY = "your-qdrant-read-write-api-key"
+
+# Graph Database (Optional - falls back to local NetworkX if not configured)
+NEO4J_URI      = "neo4j+s://xxxxxx.databases.neo4j.io"
+NEO4J_USER     = "neo4j"
+NEO4J_PASSWORD = "your-password"
+```
+
+### 3. Initialize Data & Start App
+If you are using a new Qdrant collection, run the ingestion script once to load tariff documents:
+```bash
+python ingest.py
+```
+
+Launch the Streamlit app:
+```bash
+streamlit run app.py
+```

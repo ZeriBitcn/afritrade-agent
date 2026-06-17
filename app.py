@@ -570,7 +570,8 @@ with tab1:
                         result = run_agentic_flow(
                             query=q,
                             gemini_api_key=gemini_key_input if gemini_key_input else None,
-                            neo4j_config=neo4j_cfg
+                            neo4j_config=neo4j_cfg,
+                            session_id=st.session_state.session_id
                         )
                         st.session_state.agent_result = result
                     except Exception as e:
@@ -868,6 +869,106 @@ with tab3:
             st.dataframe(df_q, use_container_width=True, hide_index=True)
         else:
             st.info("No queries logged yet.")
+    
+    # ── Error Tracking & Node Latency ──
+    st.markdown("---")
+    col_err, col_lat = st.columns(2)
+    
+    with col_err:
+        st.markdown("### 🔴 Error Tracking")
+        try:
+            from observability import get_error_metrics
+            err_metrics = get_error_metrics()
+            
+            # Error summary cards
+            err_col1, err_col2 = st.columns(2)
+            with err_col1:
+                st.markdown(f"""
+                <div class="metric-card" style="padding:14px;">
+                    <div class="metric-val" style="font-size:1.8rem;">{err_metrics['error_count_24h']}</div>
+                    <div class="metric-lbl">Errors (24h)</div>
+                </div>
+                """, unsafe_allow_html=True)
+            with err_col2:
+                st.markdown(f"""
+                <div class="metric-card" style="padding:14px;">
+                    <div class="metric-val" style="font-size:1.8rem;">{err_metrics['error_rate']}%</div>
+                    <div class="metric-lbl">Error Rate</div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Errors by node chart
+            if err_metrics["errors_by_node"]:
+                import pandas as pd
+                import plotly.express as px
+                
+                df_err_node = pd.DataFrame([
+                    {"Node": k, "Errors": v} for k, v in err_metrics["errors_by_node"].items()
+                ])
+                fig_err = px.bar(
+                    df_err_node, x="Node", y="Errors",
+                    color="Node",
+                    color_discrete_sequence=["#ef4444", "#f59e0b", "#60a5fa", "#34d399"]
+                )
+                fig_err.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#cbd5e1', showlegend=False,
+                    margin=dict(l=10, r=10, t=10, b=10), height=200
+                )
+                st.plotly_chart(fig_err, use_container_width=True)
+            
+            # Recent errors table
+            if err_metrics["recent_errors"]:
+                import pandas as pd
+                df_errs = pd.DataFrame(err_metrics["recent_errors"])
+                df_errs.columns = ["Timestamp", "Node", "Type", "Message", "Session"]
+                st.dataframe(df_errs, use_container_width=True, hide_index=True)
+            else:
+                st.success("✅ No errors recorded. System healthy.")
+        except Exception as obs_err:
+            st.info(f"Observability module loading: {obs_err}")
+    
+    with col_lat:
+        st.markdown("### ⏱️ Node Latency Breakdown")
+        st.caption("Average processing time per agent node (from last query).")
+        
+        # Show latency from the most recent agent result if available
+        if st.session_state.get("agent_result"):
+            node_timings = st.session_state.agent_result.get("metadata", {}).get("node_timings", {})
+            if node_timings:
+                import pandas as pd
+                import plotly.express as px
+                
+                df_lat = pd.DataFrame([
+                    {"Node": k.replace("_", " ").title(), "Latency (ms)": v}
+                    for k, v in node_timings.items()
+                ])
+                fig_lat = px.bar(
+                    df_lat, x="Node", y="Latency (ms)",
+                    color="Node",
+                    color_discrete_sequence=["#60a5fa", "#c084fc", "#34d399", "#f59e0b"]
+                )
+                fig_lat.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#cbd5e1', showlegend=False,
+                    yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
+                    margin=dict(l=10, r=10, t=10, b=10), height=280
+                )
+                st.plotly_chart(fig_lat, use_container_width=True)
+                
+                # Total pipeline time
+                total_ms = sum(node_timings.values())
+                st.markdown(f"""
+                <div style="text-align:center; padding:8px; background:rgba(30,41,59,0.3); 
+                            border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+                    <span style="color:#94a3b8; font-size:0.85rem;">Total Pipeline:</span>
+                    <span style="color:#a5b4fc; font-weight:700; font-size:1.1rem; margin-left:8px;">{total_ms:.0f}ms</span>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.info("Run a query to see node latency breakdown.")
+        else:
+            st.info("Run a query to see node latency breakdown.")
 
 # ──────────────────────────────────────────────
 # 6. Footer Section
